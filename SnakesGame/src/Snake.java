@@ -1,16 +1,16 @@
-import java.util.Deque;
+import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.Rectangle;
 
 public class Snake{
-	public Deque<Rectangle> body;
+	public ArrayList<Rectangle> body;
 	public boolean userOrIA;
 	public Color color;
 
 	/**
 	* Constructor for Snake class.
 	*/
-	public Snake(Color color, Deque<Rectangle> body, boolean userOrIA){
+	public Snake(Color color, ArrayList<Rectangle> body, boolean userOrIA){
 		this.color = color;
 		this.userOrIA = userOrIA;
 		this.body = body;
@@ -34,7 +34,7 @@ public class Snake{
 	* Remove snake's tail
 	*/
 	private void removeTail(){
-		body.removeLast();
+		body.remove(body.size()-1);
 	}
 	
 	/**
@@ -42,7 +42,7 @@ public class Snake{
 	* @param head Snake's head
 	*/
 	private void addHead(Rectangle head){
-		body.addFirst(head);
+		body.add(0, head);
 	}
 	
 	/**
