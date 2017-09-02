@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.*;
 
 /**
  * Class Canvas - a class to allow for simple graphical 
@@ -11,7 +10,6 @@ import java.awt.geom.*;
  *
  * @version 2008.03.30
  */
-
 public class Screen {
     private JFrame frame;
     private CanvasPane canvas;
@@ -20,6 +18,7 @@ public class Screen {
     private Image canvasImage;
     private final int width = 700;
     private final int height = 500; 
+    private Shape board;
 
     /**
      * Create a Screen      
@@ -29,10 +28,11 @@ public class Screen {
          canvas = new CanvasPane();
          frame.setContentPane(canvas);
          canvas.setPreferredSize(new Dimension(width, height));
-         backgroundColor = Color.white;
+         backgroundColor = Color.yellow;
          frame.pack();
          setVisible(true);
          Menu();
+         board = new Rectangle(0, 0, width - 100, height - 100); 
     }
 
     /**
@@ -123,9 +123,15 @@ public class Screen {
     }
 
     public void Menu () {
-    	drawString("Welcome to Snake's Game", 100, 70);
+    	setFont(new Font("helvetica", Font.BOLD, 14));
+        setForegroundColor(Color.red);
+        drawString("Welcome to Snake's Game", 100, 70);
     	wait(2000);
     	erase();
+    	
+    	graphic.draw(board);
+    	//graphic.drawRect(0, 0, width - 100, height - 100);
+    	canvas.repaint();
     }
     
     
@@ -153,7 +159,7 @@ public class Screen {
         graphic.setColor(backgroundColor);
         graphic.drawString(text, x, y);   
         graphic.setColor(original);
-        canvas.repaint();
+        //canvas.repaint();
     }
     
     /**
