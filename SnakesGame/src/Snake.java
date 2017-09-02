@@ -17,20 +17,6 @@ public class Snake{
 	}
 
 	/**
-	* @return Returns snake's head
-	*/
-	public Rectangle getHead(){
-		return body.getFirst();
-	}
-
-	/**
-	* @return Returns snake's tail
-	*/
-	public Rectangle getTail(){
-		return body.getLast();
-	}
-
-	/**
 	* @return 'True' if snake is controlled by user and 'False' if snake is controlled by IA.
 	*/
 	public boolean isUser(){
@@ -47,21 +33,24 @@ public class Snake{
 	/**
 	* Remove snake's tail
 	*/
-	public void removeTail(){
+	private void removeTail(){
 		body.removeLast();
 	}
 	
 	/**
 	* Add snake's head
-	* @param head The snake's head
+	* @param head Snake's head
 	*/
-	public void addHead(Rectangle head){
+	private void addHead(Rectangle head){
 		body.addFirst(head);
 	}
-
+	
+	/**
+	* Movement the snake to some direction
+	* @param head Rectangle with the next position of the head
+	*/
 	public void moviment(Rectangle head){	
+		addHead(head);
 		removeTail();
 	}
-	
-	
 }
