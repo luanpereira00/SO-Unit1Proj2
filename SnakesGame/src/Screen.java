@@ -17,8 +17,7 @@ public class Screen {
     private Color backgroundColor;
     private Image canvasImage;
     private final int width = 700;
-    private final int height = 500; 
-    private Shape board;
+    private final int height = 500;
 
     /**
      * Create a Screen      
@@ -28,11 +27,10 @@ public class Screen {
          canvas = new CanvasPane();
          frame.setContentPane(canvas);
          canvas.setPreferredSize(new Dimension(width, height));
-         backgroundColor = Color.yellow;
+         backgroundColor = Color.black;
          frame.pack();
          setVisible(true);
-         Menu();
-         board = new Rectangle(0, 0, width - 100, height - 100); 
+         Menu(); 
     }
 
     /**
@@ -125,13 +123,16 @@ public class Screen {
     public void Menu () {
     	setFont(new Font("helvetica", Font.BOLD, 14));
         setForegroundColor(Color.red);
-        drawString("Welcome to Snake's Game", 100, 70);
+        drawString("Welcome to Snake's Game", 250, 70);
     	wait(2000);
     	erase();
     	
-    	graphic.draw(board);
-    	//graphic.drawRect(0, 0, width - 100, height - 100);
-    	canvas.repaint();
+    	// draw the border
+    	double thickness = 20;
+    	Stroke oldStroke = graphic.getStroke();
+    	graphic.setStroke(new BasicStroke((float) thickness));
+    	graphic.drawRect(0, 0, width, height);
+    	graphic.setStroke(oldStroke);
     }
     
     
