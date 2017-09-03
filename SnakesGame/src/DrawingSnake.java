@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
@@ -9,42 +10,43 @@ public class DrawingSnake implements Runnable {
     private final int height = 10;
     private Screen screen;
 	
-	public DrawingSnake () {
-		screen = new Screen();
+	public DrawingSnake (/*Screen screen*/) {
+		//this.screen = screen;
 	}
 	
 	public void run () {
-		buildSnake();
-//		screen.setForegroundColor(Color.green);
-		System.out.println("alow");
-		for(Rectangle e : snake.body) {
-			screen.fill(e);
+		for(Rectangle r : snake.body) {
+			screen.fill(r);
 		}
 	}
 	
-	public void buildSnake () {
+	public Snake buildSnake (Color color, boolean userOrIA) {
+		Dimension start = new Dimension(50,20);
+		Dimension end = new Dimension(150,20);
+		snake = new Snake(color, createBody(start, end), userOrIA);
+		return snake;
+	}
+	
+	/**
+	 * Creates snake's body for the one that is being created 
+	 * @param start The start Dimension of the snake
+	 * @param end The end Dimension of the snake
+	 * @return Return a ArrayList with snake's body
+	 */
+	private ArrayList<Rectangle> createBody(Dimension start, Dimension end) {
 		ArrayList<Rectangle> body = new ArrayList<Rectangle>();
-		int xPos = 100, yPos = 100; 
-		for(int i = 0; i < 10; i++) { //criando o corpo de uma cobrinha
-			screen.setForegroundColor(Color.green);
-			Rectangle e = new Rectangle (xPos, yPos, width, height);
-			body.add(e);
-			xPos += 10;
+		int xPos = (int) start.getWidth();
+		int yPos = (int) start.getHeight();
+		while(xPos < (int) end.getWidth()  && yPos == (int) end.getHeight()) {
+			body.add(new Rectangle(xPos, yPos, width, height));
+			xPos += width;
 		}
-		snake = new Snake (Color.green, body, true);
+		return body;
 	}
 	
-	public static void main (String[] args) {
-		DrawingSnake d = new DrawingSnake();
-		Thread t = new Thread(d);
-		t.start();
+	
+	public Snake getSnake () {
+		return snake;
 	}
-}
 
-//class Main {
-//	public static void main (String[] args) {
-//		DrawingSnake d = new DrawingSnake();
-//		Thread t = new Thread(d);
-//		t.start();
-//	}
-//}
+}

@@ -4,67 +4,20 @@ import java.awt.Rectangle;
 import java.awt.Dimension;
 import java.util.Random;
 
-class RunnableDemo implements Runnable {
-   private Thread thread;
-   private String threadName;
-   
-   RunnableDemo(String name) {
-      threadName = name;
-      System.out.println("Creating " +  threadName );
-   }
-   
-   public void run() {
-      System.out.println("Running " +  threadName );
-      try {
-         for(int i = 4; i > 0; i--) {
-            System.out.println("Thread: " + threadName + ", " + i);
-            // Let the thread sleep for a while.
-            Thread.sleep(50);
-         }
-      }catch (InterruptedException e) {
-         System.out.println("Thread " +  threadName + " interrupted.");
-      }
-      System.out.println("Thread " +  threadName + " exiting.");
-   }
-   
-   public void start () {
-      System.out.println("Starting " +  threadName );
-      if (thread == null) {
-         thread = new Thread (this, threadName);
-         thread.start ();
-      }
-   }
-}
-
 public class SnakeGame {
-	private ArrayList<Snake> snakeList; //An ArrayList with all Snakes playable
+	private ArrayList<DrawingSnake> snakeList; //An ArrayList with all Snakes playable
 	public Screen board; //The board of the game
 	public int pxScale; //Pixel scale of rectangles of snake's body
+	public Screen screen;
 	
 	/**
 	 * Constructor for SnakeGame classe
 	 */
 	public SnakeGame(){
 		board = new Screen();
-		snakeList = new ArrayList<Snake>();
+		snakeList = new ArrayList<DrawingSnake>();
 		pxScale = 10;
-	}
-	
-	/**
-	 * Creates snake's body for the one that is being created 
-	 * @param start The start Dimension of the snake
-	 * @param end The end Dimension of the snake
-	 * @return Return a ArrayList with snake's body
-	 */
-	private ArrayList<Rectangle> createBody(Dimension start, Dimension end) {
-		ArrayList<Rectangle> body = new ArrayList<Rectangle>();
-		int xPos = (int) start.getWidth();
-		int yPos = (int) start.getHeight();
-		while(xPos < (int) end.getWidth()  && yPos == (int) end.getHeight()) {
-			body.add(new Rectangle(xPos, yPos, pxScale, pxScale));
-			xPos += pxScale;
-		}
-		return body;
+		screen = new Screen();
 	}
 	
 	public Dimension randDimension() {	
@@ -83,18 +36,34 @@ public class SnakeGame {
 	 * @param color The 
 	 * @param userOrIA
 	 */
-	public void addSnake(Color color, boolean userOrIA) {	
-		Dimension start = new Dimension(50,20);
-		Dimension end = new Dimension(150,20);
-		snakeList.add(new Snake(color, createBody(start, end), userOrIA));
+	public void addDSnake(Color color, boolean userOrIA) {	
+		DrawingSnake d = new DrawingSnake(screen);
+		d.buildSnake(color, userOrIA);
+		snakeList.add(d);
 	}
 	
 	public static void main(String args[]) {
 		SnakeGame game = new SnakeGame();
+		game.addDSnake(Color.green, false);
 		
-	   	game.addSnake(Color.yellow, false);
-	   	Dimension d = game.randDimension();
-	   	System.out.println(d.getHeight() + " - " + d.getWidth()); 
+		//Dimension d = game.randDimension();
+		
+		for(DrawingSnake d  : game.snakeList) {
+			Thread t = new Thread(d);
+			t.start();
+		}
+		
+		game.screen.erase();
+		game.screen.wait(2000);
+		game.addDSnake(Color.white, false);
+		
+		for(DrawingSnake d  : game.snakeList) {
+			Thread t = new Thread(d);
+			t.start();
+		}
+		
+	   	
+	   	//System.out.println(d.getHeight() + " - " + d.getWidth()); 
 	   	//while(True) {
 	   		//board.printSnakes();
 			//board.movementSnakes();
