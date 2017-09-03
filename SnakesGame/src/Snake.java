@@ -42,7 +42,7 @@ public class Snake{
 	* Remove snake's tail
 	*/
 	private void removeTail(){
-		body.remove(body.size()-1);
+		body.remove(0);
 	}
 	
 	/**
@@ -50,7 +50,7 @@ public class Snake{
 	* @param head Snake's head
 	*/
 	private void addHead(Rectangle head){
-		body.add(0, head);
+		body.add(head);
 	}
 	
 	/**

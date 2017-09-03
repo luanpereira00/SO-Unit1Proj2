@@ -36,12 +36,25 @@ public class SnakeGame {
 		
 		game.addDSnake(Color.blue, false);
 		game.addDSnake(Color.green, false);
+		game.addDSnake(Color.yellow, false);
+		game.addDSnake(Color.gray, false);
 		
 		for(DrawingSnake d : game.snakeList) {
 			Thread t = new Thread(d);
 			t.start();
-			game.board.wait(2000);
+			game.board.wait(1000);
 		}
+		game.board.wait(200);
+		//int i = 0;
+		//while (i<100) {
+			for(DrawingSnake d : game.snakeList) {
+				d.movementSnake();
+				Thread t = new Thread(d);
+				t.start();
+				game.board.wait(20);
+			}
+		//	i++;
+		//}
 		
 		//game.addDSnake(Color.white, false);
 		

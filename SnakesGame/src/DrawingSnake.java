@@ -28,7 +28,6 @@ public class DrawingSnake implements Runnable {
 		Dimension start = randDimension();
 		Dimension end = randDimensionInLine(start, 10);
 		snake = new Snake(color, createBody(start, end), userOrIA);
-		System.out.println(snake.getHead().getWidth() + " - " + snake.getHead().getHeight());
 		return snake;
 	}
 	
@@ -93,31 +92,154 @@ public class DrawingSnake implements Runnable {
 		if(yPos == (int) end.getHeight()) { //horizontal snakes
 			if(xPos-end.getWidth()<0) { //horizontal snakes headed for left
 				while(xPos <= (int) end.getWidth()) {
-					body.add(new Rectangle(xPos, yPos, pxScale, pxScale));
+					body.add(0, new Rectangle(xPos, yPos, pxScale, pxScale));
 					xPos += pxScale;
 				}
 			} else { //horizontal snakes headed for right
 				while(xPos >= (int) end.getWidth()) {
-					body.add(new Rectangle(xPos, yPos, pxScale, pxScale));
+					body.add(0, new Rectangle(xPos, yPos, pxScale, pxScale));
 					xPos -= pxScale;
 				}
 			}
 		} else { //vertical snakes, by consequence
 			if(yPos-end.getHeight()<0) { //vertical snakes headed for up
 				while(yPos <= (int) end.getHeight()) {
-					body.add(new Rectangle(xPos, yPos, pxScale, pxScale));
+					body.add(0, new Rectangle(xPos, yPos, pxScale, pxScale));
 					yPos += pxScale;
 				}
 			}
 			else { //vertical snakes headed for down
 				while(yPos >= (int) end.getHeight()) {
-					body.add(new Rectangle(xPos, yPos, pxScale, pxScale));
+					body.add(0, new Rectangle(xPos, yPos, pxScale, pxScale));
 					yPos -= pxScale;
 				}
 			}
 		}
 		
 		return body;
+	}
+	
+	public void movementSnake() {
+		snake.moviment(chooseNextHeadPosition(snake));
+	}
+	
+	private Rectangle chooseNextHeadPosition(Snake snake) {
+		Rectangle nextPos = new Rectangle();
+		Random rnd = new Random();
+		int chooser = rnd.nextInt();
+		if (chooser<0) chooser*=-1;
+		chooser = chooser % 3; //0==front, 1==left, 2==right
+		//System.out.println("chooser " + chooser);
+		//System.out.println(snake.getHead().getX() + " snake " + snake.getHead().getY());
+		if(chooser == 0) {
+			nextPos = moveForward(snake);
+		} else if(chooser == 1) {
+			nextPos = moveToLeft(snake);
+		} else {
+			nextPos = moveToRight(snake);
+		}
+		//System.out.println(nextPos.getWidth() + " nextPos " + nextPos.getHeight());
+		return nextPos;
+	}
+	
+	private Rectangle moveForward(Snake snake) {
+		Rectangle rect = new Rectangle();
+		int xPos=0;
+		int yPos=0;
+		
+		if(snake.getHead().getX()==snake.getTail().getX()) {	//vertical snakes
+			if(snake.getHead().getY()-snake.getTail().getY()>0) { //downing snakes
+				xPos = (int)snake.getHead().getX();
+				yPos = (int)snake.getHead().getY()+pxScale;
+				rect = new Rectangle(xPos, yPos,pxScale, pxScale);
+			}
+			else {															//upping snakes
+				xPos = (int)snake.getHead().getX();
+				yPos = (int)snake.getHead().getY()-pxScale;
+				rect = new Rectangle(xPos, yPos,pxScale, pxScale);
+			}		
+		}
+		
+		if(snake.getHead().getY()==snake.getTail().getY()) { //horizontal snakes
+			if(snake.getHead().getX()-snake.getTail().getX()>0) { //for right snakes
+				xPos = (int)snake.getHead().getX()+pxScale;
+				yPos = (int)snake.getHead().getY();
+				rect = new Rectangle(xPos, yPos,pxScale, pxScale);
+			}
+			else {														//for left snakes
+				xPos = (int)snake.getHead().getX()-pxScale;
+				yPos = (int)snake.getHead().getY();
+				rect = new Rectangle(xPos, yPos,pxScale, pxScale);
+			}
+		}
+		//System.out.println(xPos + " forward " + yPos);
+		return rect;
+	}
+	
+	private Rectangle moveToLeft(Snake snake) {
+		Rectangle rect = new Rectangle();
+		int xPos=0;
+		int yPos=0;
+		if(snake.getHead().getX()==snake.getTail().getX()) {	//vertical snakes
+			if(snake.getHead().getY()-snake.getTail().getY()>0) { //downing snakes
+				xPos = (int)snake.getHead().getX()+pxScale;
+				yPos = (int)snake.getHead().getY();
+				rect = new Rectangle(xPos, yPos,pxScale, pxScale);
+			}
+			else {															//upping snakes
+				xPos = (int)snake.getHead().getX()-pxScale;
+				yPos = (int)snake.getHead().getY();
+				rect = new Rectangle(xPos, yPos,pxScale, pxScale);
+			}		
+		}
+		
+		if(snake.getHead().getY()==snake.getTail().getY()) { //horizontal snakes
+			if(snake.getHead().getX()-snake.getTail().getX()>0) { //for right snakes
+				xPos = (int)snake.getHead().getX();
+				yPos = (int)snake.getHead().getY()-pxScale;
+				rect = new Rectangle(xPos, yPos,pxScale, pxScale);
+			}
+			else {														//for left snakes
+				xPos = (int)snake.getHead().getX();
+				yPos = (int)snake.getHead().getY()+pxScale;
+				rect = new Rectangle(xPos, yPos,pxScale, pxScale);
+			}
+		}
+		//System.out.println(xPos + " to left " + yPos);
+		return rect;
+	}
+	
+	private Rectangle moveToRight(Snake snake) {
+		Rectangle rect = new Rectangle();
+		int xPos=0;
+		int yPos=0;
+		if(snake.getHead().getX()==snake.getTail().getX()) {	//vertical snakes
+			if(snake.getHead().getY()-snake.getTail().getY()>0) { //downing snakes
+				xPos = (int)snake.getHead().getX()-pxScale;
+				yPos = (int)snake.getHead().getY();
+				rect = new Rectangle(xPos, yPos,pxScale, pxScale);
+			}
+			else {															//upping snakes
+				xPos = (int)snake.getHead().getX()+pxScale;
+				yPos = (int)snake.getHead().getY();
+				rect = new Rectangle(xPos, yPos,pxScale, pxScale);
+			}		
+		}
+		
+		if(snake.getHead().getY()==snake.getTail().getY()) { //horizontal snakes
+			if(snake.getHead().getX()-snake.getTail().getX()>0) { //for right snakes
+				xPos = (int)snake.getHead().getX();
+				yPos = (int)snake.getHead().getY()+pxScale;
+				rect = new Rectangle(xPos, yPos,pxScale, pxScale);
+			}
+			else {														//for left snakes
+				xPos = (int)snake.getHead().getX();
+				yPos = (int)snake.getHead().getY()-pxScale;
+				rect = new Rectangle(xPos, yPos,pxScale, pxScale);
+			}
+		}
+		//System.out.println(xPos + " to right " + yPos);
+		return rect;
 	}
 	
 	
