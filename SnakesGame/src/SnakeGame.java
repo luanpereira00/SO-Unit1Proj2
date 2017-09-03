@@ -8,7 +8,6 @@ public class SnakeGame {
 	private ArrayList<DrawingSnake> snakeList; //An ArrayList with all Snakes playable
 	public Screen board; //The board of the game
 	public int pxScale;  //Pixel scale of rectangles of snake's body
-	public Screen screen;
 	
 	/**
 	 * Constructor for SnakeGame classe
@@ -17,7 +16,6 @@ public class SnakeGame {
 		board = new Screen();
 		snakeList = new ArrayList<DrawingSnake>();
 		pxScale = 10;
-		screen = new Screen();
 	}
 	
 	/**
@@ -42,28 +40,23 @@ public class SnakeGame {
 	 * @param color The 
 	 * @param userOrIA
 	 */
-	public void  addDSnake(Color color, boolean userOrIA) {	
-		DrawingSnake d = new DrawingSnake();
-		
+	public void addDSnake(Color color, boolean userOrIA) {	
+		DrawingSnake d = new DrawingSnake(board);
 		snakeList.add(d);
-		screen.setForegroundColor(color);
-		Snake s = d.buildSnake(color, userOrIA);
-		for(Rectangle r : s.body) {
-			screen.draw(r);
-		}
+		d.buildSnake(color, userOrIA);
 	}
 	
 	public static void main(String args[]) {
 		SnakeGame game = new SnakeGame();
-		game.screen.menu();
+		game.board.menu();
 		
-		game.addDSnake(Color.green, false);
-		//game.addDSnake(Color.yellow, false);
+		game.addDSnake(Color.red, false);
+		game.addDSnake(Color.yellow, false);
 		
 		for(DrawingSnake d : game.snakeList) {
 			Thread t = new Thread(d);
 			t.start();
-			game.screen.wait(1000);
+			game.board.wait(2000);
 		}
 		
 		//game.addDSnake(Color.white, false);

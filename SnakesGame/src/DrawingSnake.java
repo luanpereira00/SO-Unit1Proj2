@@ -9,16 +9,17 @@ public class DrawingSnake implements Runnable {
 	public Snake snake;
 	private final int width = 10;
     private final int height = 10;
-    //private Screen screen;
+    private Screen screen;
 	
-	public DrawingSnake ( ) {
-		//screen = new Screen();
+	public DrawingSnake (Screen screen) {
+		this.screen = screen;
 	}
 	
 	public void run () {
-//		for(Rectangle r : snake.body) {
-//			screen.fill(r);
-//		}
+		for(Rectangle r : snake.body) {
+			screen.setForegroundColor(snake.getColor());
+			screen.fill(r);
+		}
 	}
 	
 	public Snake buildSnake (Color color, boolean userOrIA) {
@@ -37,12 +38,17 @@ public class DrawingSnake implements Runnable {
 		
 		Random rnd = new Random();
 		
-		int xPos = rnd.nextInt() % 600 + 100;
-        int yPos = rnd.nextInt() % 400 + 100;
+		int xPos = rnd.nextInt() % 400;// - 100;
+        int yPos = rnd.nextInt() % 400;// - 100;
+        if(xPos < 0) xPos = (xPos * (-1));
+        if(yPos < 0) yPos = (yPos * (-1));
+        
+        System.out.println(xPos);
+        System.out.println(yPos);
         
 		for(int i = 0; i < 10; i++) {
 			body.add(new Rectangle(xPos, yPos, width, height));
-			yPos += 10;
+			xPos += 10;
 		}
 		return body;
 	}
