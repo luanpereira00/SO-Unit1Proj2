@@ -1,8 +1,6 @@
 import java.util.ArrayList;
 import java.awt.Color;
-import java.awt.Rectangle;
-import java.awt.Dimension;
-import java.util.Random;
+
 
 public class SnakeGame {
 	private ArrayList<DrawingSnake> snakeList; //An ArrayList with all Snakes playable
@@ -45,16 +43,19 @@ public class SnakeGame {
 			game.board.wait(1000);
 		}
 		game.board.wait(200);
-		//int i = 0;
-		//while (i<100) {
+		int i = 0;
+		while (i<20) {
 			for(DrawingSnake d : game.snakeList) {
 				d.movementSnake();
+			}	
+			for(DrawingSnake d : game.snakeList) {
 				Thread t = new Thread(d);
 				t.start();
-				game.board.wait(20);
+				game.board.wait(200);
 			}
-		//	i++;
-		//}
+			
+			i++;
+		}
 		
 		//game.addDSnake(Color.white, false);
 		

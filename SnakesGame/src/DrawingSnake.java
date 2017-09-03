@@ -7,8 +7,6 @@ import java.util.Random;
 
 public class DrawingSnake implements Runnable {
 	public Snake snake;
-	private final int width = 10;
-    private final int height = 10;
     private Screen screen;
     private int pxScale;
 	
@@ -19,6 +17,8 @@ public class DrawingSnake implements Runnable {
 	
 	public void run () {
 		for(Rectangle r : snake.body) {
+			screen.setForegroundColor(Color.black);
+			screen.fill(r);
 			screen.setForegroundColor(snake.getColor());
 			screen.fill(r);
 		}
@@ -101,7 +101,8 @@ public class DrawingSnake implements Runnable {
 					xPos -= pxScale;
 				}
 			}
-		} else { //vertical snakes, by consequence
+		} 
+		else { //vertical snakes, by consequence
 			if(yPos-end.getHeight()<0) { //vertical snakes headed for up
 				while(yPos <= (int) end.getHeight()) {
 					body.add(0, new Rectangle(xPos, yPos, pxScale, pxScale));
@@ -120,7 +121,9 @@ public class DrawingSnake implements Runnable {
 	}
 	
 	public void movementSnake() {
-		snake.moviment(chooseNextHeadPosition(snake));
+		Rectangle rect = chooseNextHeadPosition(snake);
+		//System.out.println("Rect " + rect.getX()  + " <> " + rect.getY());
+		snake.moviment(rect);
 	}
 	
 	private Rectangle chooseNextHeadPosition(Snake snake) {
@@ -128,12 +131,12 @@ public class DrawingSnake implements Runnable {
 		Random rnd = new Random();
 		int chooser = rnd.nextInt();
 		if (chooser<0) chooser*=-1;
-		chooser = chooser % 3; //0==front, 1==left, 2==right
+		chooser = chooser % 10; //0 or 4 ==front, 1==left, 2==right
 		//System.out.println("chooser " + chooser);
 		//System.out.println(snake.getHead().getX() + " snake " + snake.getHead().getY());
-		if(chooser == 0) {
+		if(chooser>1) {
 			nextPos = moveForward(snake);
-		} else if(chooser == 1) {
+		} else if(chooser == 0) {
 			nextPos = moveToLeft(snake);
 		} else {
 			nextPos = moveToRight(snake);
