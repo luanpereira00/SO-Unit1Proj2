@@ -2,28 +2,27 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class DrawingSnake implements Runnable {
 	public Snake snake;
 	private final int width = 10;
     private final int height = 10;
-    private Screen screen;
+    //private Screen screen;
 	
-	public DrawingSnake (/*Screen screen*/) {
-		//this.screen = screen;
+	public DrawingSnake ( ) {
+		//screen = new Screen();
 	}
 	
 	public void run () {
-		for(Rectangle r : snake.body) {
-			screen.fill(r);
-		}
+//		for(Rectangle r : snake.body) {
+//			screen.fill(r);
+//		}
 	}
 	
 	public Snake buildSnake (Color color, boolean userOrIA) {
-		Dimension start = new Dimension(50,20);
-		Dimension end = new Dimension(150,20);
-		snake = new Snake(color, createBody(start, end), userOrIA);
+		snake = new Snake(color, createBody(), userOrIA);
 		return snake;
 	}
 	
@@ -33,13 +32,17 @@ public class DrawingSnake implements Runnable {
 	 * @param end The end Dimension of the snake
 	 * @return Return a ArrayList with snake's body
 	 */
-	private ArrayList<Rectangle> createBody(Dimension start, Dimension end) {
-		ArrayList<Rectangle> body = new ArrayList<Rectangle>();
-		int xPos = (int) start.getWidth();
-		int yPos = (int) start.getHeight();
-		while(xPos < (int) end.getWidth()  && yPos == (int) end.getHeight()) {
+	private ArrayList<Rectangle> createBody() {		
+		ArrayList<Rectangle> body = new ArrayList<Rectangle>(); 
+		
+		Random rnd = new Random();
+		
+		int xPos = rnd.nextInt() % 600 + 100;
+        int yPos = rnd.nextInt() % 400 + 100;
+        
+		for(int i = 0; i < 10; i++) {
 			body.add(new Rectangle(xPos, yPos, width, height));
-			xPos += width;
+			yPos += 10;
 		}
 		return body;
 	}

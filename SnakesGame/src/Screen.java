@@ -30,7 +30,7 @@ public class Screen {
          backgroundColor = Color.black;
          frame.pack();
          setVisible(true);
-         Menu(); 
+         //Menu(); 
     }
 
     /**
@@ -120,7 +120,7 @@ public class Screen {
         canvas.repaint();
     }
 
-    public void Menu () {
+    public void menu () {
     	setFont(new Font("helvetica", Font.BOLD, 14));
         setForegroundColor(Color.red);
         drawString("Welcome to Snake's Game", 250, 70);

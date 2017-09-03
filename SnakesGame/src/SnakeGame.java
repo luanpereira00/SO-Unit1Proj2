@@ -7,7 +7,7 @@ import java.util.Random;
 public class SnakeGame {
 	private ArrayList<DrawingSnake> snakeList; //An ArrayList with all Snakes playable
 	public Screen board; //The board of the game
-	public int pxScale; //Pixel scale of rectangles of snake's body
+	public int pxScale;  //Pixel scale of rectangles of snake's body
 	public Screen screen;
 	
 	/**
@@ -20,47 +20,58 @@ public class SnakeGame {
 		screen = new Screen();
 	}
 	
-	public Dimension randDimension() {	
-		Random rnd = new Random();
-		int xPos = rnd.nextInt() % (int) board.getSize().getWidth()/pxScale;
-		int yPos = rnd.nextInt() % (int) board.getSize().getHeight()/pxScale;	
-		
-		if(xPos<0) xPos*=-1;
-		if(yPos<0) yPos*=-1;
-		
-		return new Dimension(xPos*pxScale, yPos*pxScale);
-	}
+	/**
+    * Creates a random dimension for end of snake's body based on start
+    * @param start The start of snake's body
+    * @param bodyDimension A variable that sets how long will be the snake
+    * @return Return a dimension
+    **/
+	public Dimension randDimension() {
+        Random rnd = new Random();
+        int xPos = rnd.nextInt() % (int) board.getSize().getWidth()/pxScale;
+        int yPos = rnd.nextInt() % (int) board.getSize().getHeight()/pxScale;
+
+        if(xPos<0) xPos=-1;
+        if(yPos<0) yPos=-1;
+
+        return new Dimension(xPos*pxScale, yPos*pxScale);
+    }
 	
 	/**
 	 * Add a snake to snakeList's array
 	 * @param color The 
 	 * @param userOrIA
 	 */
-	public void addDSnake(Color color, boolean userOrIA) {	
-		DrawingSnake d = new DrawingSnake(screen);
-		d.buildSnake(color, userOrIA);
+	public void  addDSnake(Color color, boolean userOrIA) {	
+		DrawingSnake d = new DrawingSnake();
+		
 		snakeList.add(d);
+		screen.setForegroundColor(color);
+		Snake s = d.buildSnake(color, userOrIA);
+		for(Rectangle r : s.body) {
+			screen.draw(r);
+		}
 	}
 	
 	public static void main(String args[]) {
 		SnakeGame game = new SnakeGame();
+		game.screen.menu();
+		
 		game.addDSnake(Color.green, false);
+		//game.addDSnake(Color.yellow, false);
 		
-		//Dimension d = game.randDimension();
-		
-		for(DrawingSnake d  : game.snakeList) {
+		for(DrawingSnake d : game.snakeList) {
 			Thread t = new Thread(d);
 			t.start();
+			game.screen.wait(1000);
 		}
 		
-		game.screen.erase();
-		game.screen.wait(2000);
-		game.addDSnake(Color.white, false);
+		//game.addDSnake(Color.white, false);
 		
-		for(DrawingSnake d  : game.snakeList) {
-			Thread t = new Thread(d);
-			t.start();
-		}
+//		for(DrawingSnake d  : game.snakeList) {
+//			Thread t = new Thread(d);
+//			t.start();
+//		}
 		
 	   	
 	   	//System.out.println(d.getHeight() + " - " + d.getWidth()); 
