@@ -123,7 +123,8 @@ public class DrawingSnake implements Runnable {
 	public void movementSnake() {
 		Rectangle rect = chooseNextHeadPosition(snake);
 		//System.out.println("Rect " + rect.getX()  + " <> " + rect.getY());
-		snake.moviment(rect);
+		Rectangle r = snake.moviment(rect);
+		screen.eraseRectangle((int)r.getX(), (int)r.getY(), (int)r.getWidth(), (int)r.getHeight());
 	}
 	
 	private Rectangle chooseNextHeadPosition(Snake snake) {

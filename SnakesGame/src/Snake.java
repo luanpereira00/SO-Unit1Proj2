@@ -41,8 +41,10 @@ public class Snake{
 	/**
 	* Remove snake's tail
 	*/
-	private void removeTail(){
+	private Rectangle removeTail(){
+		Rectangle r = body.get(body.size()-1);
 		body.remove(body.size()-1);
+		return r;
 	}
 	
 	/**
@@ -57,8 +59,8 @@ public class Snake{
 	* Movement the snake to some direction
 	* @param head Rectangle with the next position of the head
 	*/
-	public void moviment(Rectangle head){	
+	public Rectangle moviment(Rectangle head){	
 		addHead(head);
-		removeTail();
+		return removeTail();
 	}
 }

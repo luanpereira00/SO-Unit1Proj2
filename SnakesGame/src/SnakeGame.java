@@ -40,18 +40,18 @@ public class SnakeGame {
 		for(DrawingSnake d : game.snakeList) {
 			Thread t = new Thread(d);
 			t.start();
-			game.board.wait(1000);
+			//game.board.wait(1000);
 		}
 		game.board.wait(200);
 		int i = 0;
-		while (i<20) {
+		while (true) {
 			for(DrawingSnake d : game.snakeList) {
 				d.movementSnake();
 			}	
 			for(DrawingSnake d : game.snakeList) {
 				Thread t = new Thread(d);
 				t.start();
-				game.board.wait(200);
+				game.board.wait(100);
 			}
 			
 			i++;
