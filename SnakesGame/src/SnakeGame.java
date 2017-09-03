@@ -19,29 +19,13 @@ public class SnakeGame {
 	}
 	
 	/**
-    * Creates a random dimension for end of snake's body based on start
-    * @param start The start of snake's body
-    * @param bodyDimension A variable that sets how long will be the snake
-    * @return Return a dimension
-    **/
-	public Dimension randDimension() {
-        Random rnd = new Random();
-        int xPos = rnd.nextInt() % (int) board.getSize().getWidth()/pxScale;
-        int yPos = rnd.nextInt() % (int) board.getSize().getHeight()/pxScale;
-
-        if(xPos<0) xPos=-1;
-        if(yPos<0) yPos=-1;
-
-        return new Dimension(xPos*pxScale, yPos*pxScale);
-    }
-	
-	/**
 	 * Add a snake to snakeList's array
 	 * @param color The 
 	 * @param userOrIA
 	 */
 	public void addDSnake(Color color, boolean userOrIA) {	
-		DrawingSnake d = new DrawingSnake(board);
+		DrawingSnake d = new DrawingSnake(board, pxScale);
+		
 		snakeList.add(d);
 		d.buildSnake(color, userOrIA);
 	}
@@ -50,8 +34,8 @@ public class SnakeGame {
 		SnakeGame game = new SnakeGame();
 		game.board.menu();
 		
-		game.addDSnake(Color.red, false);
-		game.addDSnake(Color.yellow, false);
+		game.addDSnake(Color.blue, false);
+		game.addDSnake(Color.green, false);
 		
 		for(DrawingSnake d : game.snakeList) {
 			Thread t = new Thread(d);

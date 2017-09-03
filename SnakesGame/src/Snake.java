@@ -30,6 +30,14 @@ public class Snake{
 		return color;
 	}
 	
+	public Rectangle getHead() {
+		return body.get(0);
+	}
+	
+	public Rectangle getTail() {
+		return body.get(body.size()-1);
+	}
+	
 	/**
 	* Remove snake's tail
 	*/
