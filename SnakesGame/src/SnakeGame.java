@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.Dimension;
+import java.util.Random;
 
 class RunnableDemo implements Runnable {
    private Thread thread;
@@ -66,14 +67,25 @@ public class SnakeGame {
 		return body;
 	}
 	
+	public Dimension randDimension() {	
+		Random rnd = new Random();
+		int xPos = rnd.nextInt() % (int) board.getSize().getWidth()/pxScale;
+		int yPos = rnd.nextInt() % (int) board.getSize().getHeight()/pxScale;	
+		
+		if(xPos<0) xPos*=-1;
+		if(yPos<0) yPos*=-1;
+		
+		return new Dimension(xPos*pxScale, yPos*pxScale);
+	}
+	
 	/**
 	 * Add a snake to snakeList's array
 	 * @param color The 
 	 * @param userOrIA
 	 */
 	public void addSnake(Color color, boolean userOrIA) {	
-		Dimension start = new Dimension(0,20);
-		Dimension end = new Dimension(40,20);
+		Dimension start = new Dimension(50,20);
+		Dimension end = new Dimension(150,20);
 		snakeList.add(new Snake(color, createBody(start, end), userOrIA));
 	}
 	
@@ -81,6 +93,8 @@ public class SnakeGame {
 		SnakeGame game = new SnakeGame();
 		
 	   	game.addSnake(Color.yellow, false);
+	   	Dimension d = game.randDimension();
+	   	System.out.println(d.getHeight() + " - " + d.getWidth()); 
 	   	//while(True) {
 	   		//board.printSnakes();
 			//board.movementSnakes();
