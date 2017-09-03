@@ -49,7 +49,7 @@ public class Screen {
             graphic = (Graphics2D)canvasImage.getGraphics();
             graphic.setColor(backgroundColor);
             graphic.fillRect(0, 0, size.width, size.height);
-            graphic.setColor(Color.black);
+            graphic.setColor(Color.yellow);
         }
         frame.setVisible(true);
     }
@@ -258,9 +258,5 @@ public class Screen {
         {
             g.drawImage(canvasImage, 0, 0, null);
         }
-    }
-    
-    public static void main (String[] args) {
-    	Screen s = new Screen (); 
     }
 }
