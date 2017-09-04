@@ -9,10 +9,12 @@ public class DrawingSnake implements Runnable {
 	public Snake snake;
     private Screen screen;
     private int pxScale;
+    public boolean stop;
 	
 	public DrawingSnake (Screen screen, int pxScale) {
 		this.screen = screen;
 		this.pxScale = pxScale;
+		stop = false; 
 	}
 	
 	public void run () {
@@ -22,6 +24,8 @@ public class DrawingSnake implements Runnable {
 			screen.setForegroundColor(snake.getColor());
 			screen.fill(r);
 		}
+		
+		if(!stop) movementSnake();
 	}
 	
 	public Snake buildSnake (Color color, boolean userOrIA) {
@@ -120,11 +124,11 @@ public class DrawingSnake implements Runnable {
 		return body;
 	}
 	
-	public void movementSnake() {
+	private void movementSnake() {
 		Rectangle rect = chooseNextHeadPosition(snake);
 		//System.out.println("Rect " + rect.getX()  + " <> " + rect.getY());
 		Rectangle r = snake.moviment(rect);
-		screen.eraseRectangle((int)r.getX(), (int)r.getY(), (int)r.getWidth(), (int)r.getHeight());
+		screen.erase(r);
 	}
 	
 	private Rectangle chooseNextHeadPosition(Snake snake) {

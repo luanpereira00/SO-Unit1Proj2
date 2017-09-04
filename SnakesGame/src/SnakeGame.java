@@ -29,10 +29,12 @@ public class SnakeGame {
 		d.buildSnake(color, userOrIA);
 	}
 	
-	public void checkColision(DrawingSnake d) {
+	public boolean checkColision(DrawingSnake d) {
 		if(hadColided(d)) {
 			sendToErase(d);
-		}
+			System.out.println("Colidiu!");
+			return true;
+		}else return false;
 	}
 	
 	public boolean hadColided(DrawingSnake toCheck) {
@@ -41,19 +43,31 @@ public class SnakeGame {
 			if(!toCheck.equals(d)) {
 				for(Rectangle r : d.getSnake().body) {
 					if(rect.equals(r)) return true;
+					//Verifica se bateu na borda
+					if(rect.getX() <= 20 || rect.getX() >= (board.getWidth() - 20)) return true;
+					if(rect.getY() <= 20 || rect.getY() >= (board.getHeight() - 20)) return true;
+				}
+			}else { //verifica se bateu nele mesmo
+				for(int i = 1; i < toCheck.getSnake().body.size(); i++) {
+					Rectangle r = toCheck.getSnake().body.get(i);
+					if(rect.equals(r)) return true;
 				}
 			}
 		}	
 		return false;
 	}
 	
-	public void sendToErase(DrawingSnake d) {
-		System.out.println("Colidiu");
+	public void sendToErase(DrawingSnake d) {		
+		//for(Rectangle r: d.getSnake().body) {
+			//board.erase(r);
+		//}
+		//TODO - Falara ainda tirar o body do Screen, ele só não está desennhado mas ainda existe
+		//d.getSnake().body.clear();
 	}
 	
 	public static void main(String args[]) {
 		SnakeGame game = new SnakeGame();
-		game.board.menu();
+		game.board.erase();
 		
 		//ADD COBRINHAS COMO PAREDES?
 		
@@ -64,35 +78,19 @@ public class SnakeGame {
 		game.addDSnake(Color.cyan, false);
 		game.addDSnake(Color.white, false);
 		game.addDSnake(Color.pink, false);
-		
-		for(DrawingSnake d : game.snakeList) {
-			Thread t = new Thread(d);
-			t.start();
-			//game.board.wait(1000);
-		}
-		game.board.wait(200);
-		int i = 0;
-		while (true) {
+
+		while (!game.snakeList.isEmpty()) {
+			
 			for(DrawingSnake d : game.snakeList) {
-				d.movementSnake();
-				game.checkColision(d);
-			}	
-			for(DrawingSnake d : game.snakeList) {
-				Thread t = new Thread(d);
+				Thread t = new Thread(d); 
 				t.start();
+				if(game.checkColision(d)) {
+					d.stop = true;
+					//game.snakeList.remove(d);
+				}
 				game.board.wait(50);
 			}
-			
-			i++;
 		}
-		
-		//game.addDSnake(Color.white, false);
-		
-//		for(DrawingSnake d  : game.snakeList) {
-//			Thread t = new Thread(d);
-//			t.start();
-//		}
-		
 	   	
 	   	//System.out.println(d.getHeight() + " - " + d.getWidth()); 
 	   	//while(True) {

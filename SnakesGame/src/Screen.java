@@ -18,7 +18,7 @@ public class Screen {
     private Image canvasImage;
     private final int width = 700;
     private final int height = 500;
-
+    
     /**
      * Create a Screen      
      */
@@ -30,9 +30,18 @@ public class Screen {
          backgroundColor = Color.black;
          frame.pack();
          setVisible(true);
-         //Menu(); 
+         
+         firstScreen();
     }
 
+    public int getWidth() {
+    	return width;
+    }
+    
+    public int getHeight() {
+    	return height;
+    }
+        
     /**
      * Set the canvas visibility and brings canvas to the front of screen
      * when made visible. This method can also be used to bring an already
@@ -118,15 +127,19 @@ public class Screen {
         graphic.fill(shape);              // erase by filling background color
         graphic.setColor(original);
         canvas.repaint();
+        setForegroundColor(Color.red);
+        border();
     }
 
-    public void menu () {
+    private void firstScreen () {
     	setFont(new Font("helvetica", Font.BOLD, 14));
         setForegroundColor(Color.red);
         drawString("Welcome to Snake's Game", 250, 70);
     	wait(3000);
     	erase();
-    	
+    }
+    
+    public void border () {    	
     	// draw the border
     	double thickness = 20;
     	Stroke oldStroke = graphic.getStroke();
