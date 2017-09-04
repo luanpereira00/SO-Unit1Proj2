@@ -1,5 +1,8 @@
+package com.ufrn.imd.so.view;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Class Canvas - a class to allow for simple graphical 
@@ -11,13 +14,13 @@ import java.awt.*;
  * @version 2008.03.30
  */
 public class Screen {
-    private JFrame frame;
+    public JFrame frame;
     private CanvasPane canvas;
-    private Graphics2D graphic;
-    private Color backgroundColor;
+    public Graphics2D graphic;
+    public Color backgroundColor;
     private Image canvasImage;
-    private final int width = 700;
-    private final int height = 500;
+    private final int width = 1100;
+    private final int height = 600;
     
     /**
      * Create a Screen      
@@ -104,6 +107,7 @@ public class Screen {
         graphic.fill(new Rectangle(0, 0, size.width, size.height));
         graphic.setColor(original);
         canvas.repaint();
+        border();
     }
 
     /**
@@ -132,11 +136,34 @@ public class Screen {
     }
 
     private void firstScreen () {
-    	setFont(new Font("helvetica", Font.BOLD, 14));
-        setForegroundColor(Color.red);
-        drawString("Welcome to Snake's Game", 250, 70);
-    	wait(3000);
-    	erase();
+    	//setFont(new Font("helvetica", Font.BOLD, 14));
+//        setForegroundColor(Color.red);
+//        drawString("Welcome to Snake's Game", 250, 70);
+//    	wait(3000);
+    	//erase();
+    	
+    	//-------------------------------------------------
+//    	JButton exit = new JButton("Get out");
+//		JButton ai = new JButton("Artificial intelligence");
+//		JButton humanPlayer = new JButton("Human player");
+//		
+//		JPanel panel = new JPanel();
+//		
+//		panel.add(exit);
+//		panel.add(ai);
+//		panel.add(humanPlayer);
+//		
+//		ActionListener getOut = new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				System.exit(0);
+//			}
+//		};
+//		
+//		exit.addActionListener(getOut);
+//		
+//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		frame.pack();
+    	
     }
     
     public void border () {    	
@@ -144,6 +171,7 @@ public class Screen {
     	double thickness = 20;
     	Stroke oldStroke = graphic.getStroke();
     	graphic.setStroke(new BasicStroke((float) thickness));
+    	setForegroundColor(Color.red);
     	graphic.drawRect(0, 0, width, height);
     	graphic.setStroke(oldStroke);
     }

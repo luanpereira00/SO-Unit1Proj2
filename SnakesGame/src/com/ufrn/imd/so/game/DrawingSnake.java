@@ -1,9 +1,11 @@
+package com.ufrn.imd.so.game;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.ufrn.imd.so.view.Screen;
 
 public class DrawingSnake implements Runnable {
 	public Snake snake;
