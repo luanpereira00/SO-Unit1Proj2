@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.awt.Color;
+import java.awt.Rectangle;
 
 
 public class SnakeGame {
@@ -28,14 +29,41 @@ public class SnakeGame {
 		d.buildSnake(color, userOrIA);
 	}
 	
+	public void checkColision(DrawingSnake d) {
+		if(hadColided(d)) {
+			sendToErase(d);
+		}
+	}
+	
+	public boolean hadColided(DrawingSnake toCheck) {
+		Rectangle rect = toCheck.getSnake().getHead();
+		for(DrawingSnake d : snakeList) {
+			if(!toCheck.equals(d)) {
+				for(Rectangle r : d.getSnake().body) {
+					if(rect.equals(r)) return true;
+				}
+			}
+		}	
+		return false;
+	}
+	
+	public void sendToErase(DrawingSnake d) {
+		System.out.println("Colidiu");
+	}
+	
 	public static void main(String args[]) {
 		SnakeGame game = new SnakeGame();
 		game.board.menu();
+		
+		//ADD COBRINHAS COMO PAREDES?
 		
 		game.addDSnake(Color.blue, false);
 		game.addDSnake(Color.green, false);
 		game.addDSnake(Color.yellow, false);
 		game.addDSnake(Color.gray, false);
+		game.addDSnake(Color.cyan, false);
+		game.addDSnake(Color.white, false);
+		game.addDSnake(Color.pink, false);
 		
 		for(DrawingSnake d : game.snakeList) {
 			Thread t = new Thread(d);
@@ -47,11 +75,12 @@ public class SnakeGame {
 		while (true) {
 			for(DrawingSnake d : game.snakeList) {
 				d.movementSnake();
+				game.checkColision(d);
 			}	
 			for(DrawingSnake d : game.snakeList) {
 				Thread t = new Thread(d);
 				t.start();
-				game.board.wait(100);
+				game.board.wait(50);
 			}
 			
 			i++;

@@ -124,7 +124,7 @@ public class Screen {
     	setFont(new Font("helvetica", Font.BOLD, 14));
         setForegroundColor(Color.red);
         drawString("Welcome to Snake's Game", 250, 70);
-    	wait(200);
+    	wait(3000);
     	erase();
     	
     	// draw the border
