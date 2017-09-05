@@ -1,9 +1,6 @@
 package com.ufrn.imd.so.game;
-
 import java.util.ArrayList;
-
 import com.ufrn.imd.so.view.*;
-
 import java.awt.Color;
 import java.awt.Rectangle;
 
@@ -14,48 +11,121 @@ public class SnakeGame {
 	public Menu menu;
 	
 	/**
-	 * Constructor for SnakeGame classe
+	 * Constructor for SnakeGame class
 	 */
 	public SnakeGame(){
-		board = new Screen();
-		snakeList = new ArrayList<DrawingSnake>();
 		pxScale = 10;
+		board = new Screen(pxScale);
+		snakeList = new ArrayList<DrawingSnake>();	
 		menu = new Menu(board);
 	}
+
 	
 	/**
 	 * Add a snake to snakeList's array
-	 * @param color The 
-	 * @param userOrIA
+	 * @param color The snake color
+	 * @param userOrIA A flag that says who control the snake
 	 */
 	public void addDSnake(Color color, boolean userOrIA) {	
 		DrawingSnake d = new DrawingSnake(board, pxScale);
-		
 		snakeList.add(d);
 		d.buildSnake(color, userOrIA);
 	}
 	
+	/**
+	 * Check if the snake present in DrawingSnake collided in something and send to erase if collision is true
+	 * @param d The DrawingSnake that has a snake
+	 * @return True if collided, false in others cases
+	 */
 	public boolean checkColision(DrawingSnake d) {
 		if(hadColided(d)) {
+			//FIXME consertar esse sendToErase
 			//sendToErase(d);
-			System.out.println("Colidiu!");
+			//System.out.println("Colidiu!");
 			return true;
 		}else return false;
 	}
 	
+	/**
+	 * Check if a rectangle passed had collided with some wall
+	 * @param rect The rectangle to test
+	 * @return True if collided, false in others cases
+	 */
+	public boolean checkWallColision(Rectangle rect) {
+		if(checkTopColision(rect)) return true;
+		if(checkBottomColision(rect)) return true;
+		if(checkLeftColision(rect)) return true;
+		if(checkRightColision(rect)) return true;
+		return false;
+	}
+	
+	/**
+	 * Check if a rectangle passed had collided in top of screen
+	 * @param rect The rectangle to test
+	 * @return True if collided, false in others cases
+	 */
+	private boolean checkTopColision(Rectangle rect) {
+		if((int)rect.getY()==0) return true;
+		return false;
+	}
+	
+	/**
+	 * Check if a rectangle passed had collided in bottom of screen
+	 * @param rect The rectangle to test
+	 * @return True if collided, false in others cases
+	 */
+	private boolean checkBottomColision(Rectangle rect) {
+		if((int)rect.getY()==board.getHeight()-pxScale) return true;
+		return false;
+	}
+	
+	/**
+	 * Check if a rectangle passed had collided in left of screen
+	 * @param rect The rectangle to test
+	 * @return True if collided, false in others cases
+	 */
+	private boolean checkLeftColision(Rectangle rect) {
+		if((int)rect.getX()==0) return true;
+		return false;
+	}
+	
+	/**
+	 * Check if a rectangle passed had collided in right of screen
+	 * @param rect The rectangle to test
+	 * @return True if collided, false in others cases
+	 */
+	private boolean checkRightColision(Rectangle rect) {
+		if((int)rect.getX()==board.getWidth()-pxScale) return true;
+		return false;
+	}
+	
+	/**
+	 * Check if a drawing snake passed had collided with his snake's body
+	 * @param toCheck The drawing snake that contains the snake that is going to be checked
+	 * @return True if collided, false in others cases
+	 */
+	public boolean checkSelfColision(DrawingSnake toCheck) {
+		Rectangle rect = toCheck.getSnake().getHead();
+		for(int i = 1; i < toCheck.getSnake().body.size(); i++) {
+			Rectangle r = toCheck.getSnake().body.get(i);
+			if(rect.equals(r)) return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Check if a drawing snake passed had collided with something
+	 * @param toCheck
+	 * @return
+	 */
 	public boolean hadColided(DrawingSnake toCheck) {
 		Rectangle rect = toCheck.getSnake().getHead();
+		if(checkWallColision(rect)) return true;
+		if(checkSelfColision(toCheck)) return true;
+		
 		for(DrawingSnake d : snakeList) {
 			if(!toCheck.equals(d)) {
 				for(Rectangle r : d.getSnake().body) {
-					if(rect.equals(r)) return true;
-					//Verifica se bateu na borda
-					if(rect.getX() <= 10 || rect.getX() >= (board.getWidth() - 10)) return true;
-					if(rect.getY() <= 10 || rect.getY() >= (board.getHeight() - 10)) return true;
-				}
-			}else { //verifica se bateu nele mesmo
-				for(int i = 1; i < toCheck.getSnake().body.size(); i++) {
-					Rectangle r = toCheck.getSnake().body.get(i);
 					if(rect.equals(r)) return true;
 				}
 			}
@@ -67,10 +137,11 @@ public class SnakeGame {
 		for(Rectangle r: d.getSnake().body) {
 			board.erase(r);
 		}
-		//TODO - Falara ainda tirar o body do Screen, ele só não está desennhado mas ainda existe
+		//TODO - Falta ainda tirar o body do Screen, ele só não está desennhado mas ainda existe
 		//d.getSnake().body.clear();
 	}
 	
+
 	public static void main(String args[]) {
 		SnakeGame game = new SnakeGame();
 		
@@ -80,8 +151,8 @@ public class SnakeGame {
 		game.addDSnake(Color.gray, false);
 		game.addDSnake(Color.cyan, false);
 		game.addDSnake(Color.white, false);
-		game.addDSnake(Color.pink, false);
-
+		game.addDSnake(Color.pink, false);		
+		
 		//FIXME Interface Toda
 //		while(true) {
 //			switch(game.menu.getChoise()) {
@@ -89,7 +160,7 @@ public class SnakeGame {
 //					break;
 //				case 1: //ai
 					while (!game.snakeList.isEmpty()) {
-						//FIXME cobrinhas imortais
+						//TODO Alerta visual da morte de uma cobrinha
 						boolean tRemove = false;
 						DrawingSnake r = new DrawingSnake(game.board, 10);
 						//game.board.wait(100);
@@ -108,7 +179,7 @@ public class SnakeGame {
 						}
 						
 						if(tRemove) {
-							//FIXME Resolver remoção das cobrinhas
+							//FIXME Resolver remocao das cobrinhas
 							game.sendToErase(r);
 							game.snakeList.remove(r);
 							

@@ -21,20 +21,21 @@ public class Screen {
     private Image canvasImage;
     private final int width = 1100;
     private final int height = 600;
+    private int pxScale;
     
     /**
      * Create a Screen      
      */
-    public Screen() {
-    	 frame = new JFrame();
-         canvas = new CanvasPane();
-         frame.setContentPane(canvas);
-         canvas.setPreferredSize(new Dimension(width, height));
-         backgroundColor = Color.black;
-         frame.pack();
-         setVisible(true);
-         
-         firstScreen();
+    public Screen(int pxScale) {
+    	this.pxScale = pxScale;
+    	frame = new JFrame();
+        canvas = new CanvasPane();
+        frame.setContentPane(canvas);
+        canvas.setPreferredSize(new Dimension(width, height));
+        backgroundColor = Color.black;
+        frame.pack();
+        setVisible(true); 
+        firstScreen();
     }
 
     public int getWidth() {
@@ -111,17 +112,6 @@ public class Screen {
     }
 
     /**
-     * Erase the internal dimensions of the given rectangle. This is a 
-     * convenience method. A similar effect can be achieved with
-     * the "erase" method.
-     */
-    //FIXME Remover ou transformar para retangulo 
-    public void eraseRectangle(int xPos, int yPos, int width, int height)
-    {
-        erase(new Rectangle(xPos, yPos, width, height));
-    }
-
-    /**
      * Erase a given shape's interior on the screen.
      * @param  shape  the shape object to be erased 
      */
@@ -170,10 +160,8 @@ public class Screen {
     
     //FIXME Definir paredes de forma dinâmica (talvez cobrinhas que não se mexem?) 
     public void border () {    	
-    	// draw the border
-    	double thickness = 20;
     	Stroke oldStroke = graphic.getStroke();
-    	graphic.setStroke(new BasicStroke((float) thickness));
+    	graphic.setStroke(new BasicStroke((float) pxScale*2));
     	setForegroundColor(Color.red);
     	graphic.drawRect(0, 0, width, height);
     	graphic.setStroke(oldStroke);
