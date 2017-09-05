@@ -50,8 +50,8 @@ public class SnakeGame {
 				for(Rectangle r : d.getSnake().body) {
 					if(rect.equals(r)) return true;
 					//Verifica se bateu na borda
-					if(rect.getX() <= 20 || rect.getX() >= (board.getWidth() - 20)) return true;
-					if(rect.getY() <= 20 || rect.getY() >= (board.getHeight() - 20)) return true;
+					if(rect.getX() <= 10 || rect.getX() >= (board.getWidth() - 10)) return true;
+					if(rect.getY() <= 10 || rect.getY() >= (board.getHeight() - 10)) return true;
 				}
 			}else { //verifica se bateu nele mesmo
 				for(int i = 1; i < toCheck.getSnake().body.size(); i++) {
@@ -82,41 +82,46 @@ public class SnakeGame {
 		game.addDSnake(Color.white, false);
 		game.addDSnake(Color.pink, false);
 
-		
+		//FIXME Interface Toda
 //		while(true) {
 //			switch(game.menu.getChoise()) {
 //				case 0:
 //					break;
 //				case 1: //ai
 					while (!game.snakeList.isEmpty()) {
+						//FIXME cobrinhas imortais
 						boolean tRemove = false;
 						DrawingSnake r = new DrawingSnake(game.board, 10);
-						
+						//game.board.wait(100);
 						for(DrawingSnake d : game.snakeList) {
 							Thread t = new Thread(d); 
 							t.start();
+							game.board.wait(50);
 							if(game.checkColision(d)) {
 								d.stop = true;
 								tRemove = true;
 								r = d;
-								break;
-								
+								break;								
 							}
-							game.board.wait(20);
+							//FIXME tempo de espera na thread, muito lento no comeco e rapido demais no fim
+							
 						}
+						
 						if(tRemove) {
-							game.snakeList.remove(r);
+							//FIXME Resolver remoção das cobrinhas
 							game.sendToErase(r);
+							game.snakeList.remove(r);
+							
 						}
 					}
-					System.out.println();
+					//System.out.println();
 //					break;
 //				case 2: //Humam player
 //					
 //					break;			
 //			}
-//		}
-					
-		game.board.erase();
+			game.board.erase();
+			System.exit(0);
+		//}			
    }   
 }

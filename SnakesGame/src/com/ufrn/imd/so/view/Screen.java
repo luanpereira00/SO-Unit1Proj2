@@ -115,6 +115,7 @@ public class Screen {
      * convenience method. A similar effect can be achieved with
      * the "erase" method.
      */
+    //FIXME Remover ou transformar para retangulo 
     public void eraseRectangle(int xPos, int yPos, int width, int height)
     {
         erase(new Rectangle(xPos, yPos, width, height));
@@ -126,6 +127,7 @@ public class Screen {
      */
     public void erase(Shape shape)
     {
+    	//FIXME Dou muito problema, olhem pra mim
         Color original = graphic.getColor();
         graphic.setColor(backgroundColor);
         graphic.fill(shape);              // erase by filling background color
@@ -166,6 +168,7 @@ public class Screen {
     	
     }
     
+    //FIXME Definir paredes de forma dinâmica (talvez cobrinhas que não se mexem?) 
     public void border () {    	
     	// draw the border
     	double thickness = 20;
