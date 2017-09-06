@@ -1,4 +1,4 @@
-package com.ufrn.imd.so.game;
+package soGame;
 import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.Rectangle;

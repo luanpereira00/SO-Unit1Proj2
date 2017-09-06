@@ -1,22 +1,22 @@
-package com.ufrn.imd.so.game;
+package soGame;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.ufrn.imd.so.view.Screen;
-
 public class DrawingSnake implements Runnable {
-	public Snake snake;
+	private Snake snake;
     private Screen screen;
     private int pxScale;
     public boolean stop;
+    public int movimentSide; 
 	
 	public DrawingSnake (Screen screen, int pxScale) {
 		this.screen = screen;
 		this.pxScale = pxScale;
 		stop = false; 
+		movimentSide = 0;
 	}
 	
 	public void run () {
@@ -139,14 +139,27 @@ public class DrawingSnake implements Runnable {
 	private Rectangle chooseNextHeadPosition() {
 		Random rnd = new Random();
 		int chooser = rnd.nextInt();
-		if (chooser<0) chooser*=-1;
-		chooser = chooser % 10; 
-		if(chooser>1) { 			//80%
+		
+		if(!snake.userOrIA) { // false = IA
+			if (chooser<0) chooser*=-1;
+			chooser = chooser % 10; 
+			if(chooser>1) { 			//80%
+				return moveForward();
+			} else if(chooser == 0) { 	//10%
+				return moveToLeft();
+			} else { 					//10%
+				return moveToRight();
+			}
+		} else { // true = user
+			// 0 = forward
+			// 1 = left
+			// 2 = left
+			// 3 = right
+			// 4 = right
+			 
+			if (movimentSide == 1 || movimentSide == 2) return moveToLeft();
+			if (movimentSide == 3 || movimentSide == 4) return moveToRight();
 			return moveForward();
-		} else if(chooser == 0) { 	//10%
-			return moveToLeft();
-		} else { 					//10%
-			return moveToRight();
 		}
 	}
 	
@@ -270,7 +283,7 @@ public class DrawingSnake implements Runnable {
 	}
 	
 	/**
-	 * Return the snake "I don't know why, 'cause it's public :)"
+	 * Return the snake
 	 * @return The snake
 	 */
 	public Snake getSnake () {

@@ -1,8 +1,6 @@
-package com.ufrn.imd.so.view;
+package soGame;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * Class Canvas - a class to allow for simple graphical 
@@ -19,7 +17,7 @@ public class Screen {
     public Graphics2D graphic;
     public Color backgroundColor;
     private Image canvasImage;
-    private final int width = 1100;
+    private final int width = 1200;
     private final int height = 600;
     private int pxScale;
     
@@ -37,13 +35,18 @@ public class Screen {
         setVisible(true); 
         firstScreen();
     }
-
+     
     public int getWidth() {
     	return width;
     }
     
     public int getHeight() {
     	return height;
+    }
+    
+    public void addLabel (JLabel label) {
+    	frame.add(label);
+    	canvas.repaint();
     }
         
     /**
@@ -81,8 +84,7 @@ public class Screen {
      * foreground color of the canvas.
      * @param  shape  the shape object to be filled 
      */
-    public void fill(Shape shape)
-    {
+    public void fill(Shape shape) {
         graphic.fill(shape);
         canvas.repaint();
     }
@@ -92,16 +94,14 @@ public class Screen {
      * foreground color of the canvas. This is a convenience method. A similar 
      * effect can be achieved with the "fill" method.
      */
-    public void fillRectangle(int xPos, int yPos, int width, int height)
-    {
+    public void fillRectangle(int xPos, int yPos, int width, int height) {
         fill(new Rectangle(xPos, yPos, width, height));
     }
 
     /**
      * Erase the whole canvas.
      */
-    public void erase()
-    {
+    public void erase() {
         Color original = graphic.getColor();
         graphic.setColor(backgroundColor);
         Dimension size = canvas.getSize();
@@ -115,8 +115,7 @@ public class Screen {
      * Erase a given shape's interior on the screen.
      * @param  shape  the shape object to be erased 
      */
-    public void erase(Shape shape)
-    {
+    public void erase(Shape shape) {
     	//FIXME Dou muito problema, olhem pra mim
         Color original = graphic.getColor();
         graphic.setColor(backgroundColor);
@@ -128,34 +127,11 @@ public class Screen {
     }
 
     private void firstScreen () {
-    	//setFont(new Font("helvetica", Font.BOLD, 14));
-//        setForegroundColor(Color.red);
-//        drawString("Welcome to Snake's Game", 250, 70);
-//    	wait(3000);
-    	//erase();
-    	
-    	//-------------------------------------------------
-//    	JButton exit = new JButton("Get out");
-//		JButton ai = new JButton("Artificial intelligence");
-//		JButton humanPlayer = new JButton("Human player");
-//		
-//		JPanel panel = new JPanel();
-//		
-//		panel.add(exit);
-//		panel.add(ai);
-//		panel.add(humanPlayer);
-//		
-//		ActionListener getOut = new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				System.exit(0);
-//			}
-//		};
-//		
-//		exit.addActionListener(getOut);
-//		
-//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		frame.pack();
-    	
+    	setFont(new Font("helvetica", Font.BOLD, 24));
+    	setForegroundColor(Color.red);
+    	drawString("Welcome to Snake's Game", width/2 - 150, height/2);
+    	wait(3000);
+    	erase();    	
     }
     
     //FIXME Definir paredes de forma dinâmica (talvez cobrinhas que não se mexem?) 
@@ -167,15 +143,13 @@ public class Screen {
     	graphic.setStroke(oldStroke);
     }
     
-    
     /**
      * Draws a String on the Canvas.
      * @param  text   the String to be displayed 
      * @param  x      x co-ordinate for text placement 
      * @param  y      y co-ordinate for text placement
      */
-    public void drawString(String text, int x, int y)
-    {
+    public void drawString(String text, int x, int y) {
         graphic.drawString(text, x, y);   
         canvas.repaint();
     }
@@ -186,8 +160,7 @@ public class Screen {
      * @param  x        x co-ordinate for text placement 
      * @param  y        y co-ordinate for text placement
      */
-    public void eraseString(String text, int x, int y)
-    {
+    public void eraseString(String text, int x, int y) {
         Color original = graphic.getColor();
         graphic.setColor(backgroundColor);
         graphic.drawString(text, x, y);   
@@ -213,8 +186,7 @@ public class Screen {
      * Sets the foreground color of the Canvas.
      * @param  newColor   the new color for the foreground of the Canvas 
      */
-    public void setForegroundColor(Color newColor)
-    {
+    public void setForegroundColor(Color newColor) {
         graphic.setColor(newColor);
     }
 
@@ -247,8 +219,7 @@ public class Screen {
      * changes the current Font used on the Canvas
      * @param  newFont   new font to be used for String output
      */
-    public void setFont(Font newFont)
-    {
+    public void setFont(Font newFont) {
         graphic.setFont(newFont);
     }
 
@@ -256,8 +227,7 @@ public class Screen {
      * Returns the size of the canvas.
      * @return     The current dimension of the canvas
      */
-    public Dimension getSize()
-    {
+    public Dimension getSize() {
         return canvas.getSize();
     }
 
@@ -267,14 +237,11 @@ public class Screen {
      * used when producing animations.
      * @param  milliseconds  the number 
      */
-    public void wait(int milliseconds)
-    {
-        try
-        {
+    public void wait(int milliseconds) {
+        try {
             Thread.sleep(milliseconds);
         } 
-        catch (InterruptedException e)
-        {
+        catch (InterruptedException e) {
             // ignoring exception at the moment
         }
     }
@@ -284,8 +251,7 @@ public class Screen {
      * Canvas frame. This is essentially a JPanel with added capability to
      * refresh the image drawn on it.
      */
-    private class CanvasPane extends JPanel
-    {
+    private class CanvasPane extends JPanel {
         public void paint(Graphics g)
         {
             g.drawImage(canvasImage, 0, 0, null);
