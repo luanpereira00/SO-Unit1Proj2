@@ -143,7 +143,7 @@ public class Screen implements KeyListener{
     	drawString("Welcome to Snake's Game", width/2 - 150, height/2);
     	
     	try {
-    		File file = new File("../image/Imagem1.png");
+    		File file = new File("../image/snake.png");
 	    	BufferedImage image = ImageIO.read(file);
 	    	drawImage(image, width/2 - 60, height/2 - 140);
     	} catch (Exception e) {

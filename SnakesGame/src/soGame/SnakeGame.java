@@ -140,6 +140,7 @@ public class SnakeGame {
 	}
 	
 	public void gameAI () {
+		board.erase();
 		addDSnake(Color.blue, false);
 		addDSnake(Color.green, false);
 		addDSnake(Color.yellow, false);
@@ -182,6 +183,7 @@ public class SnakeGame {
 	}
 	
 	public void gameHP () {
+		board.erase();
 		addDSnake(Color.pink, true);
 		
 		while (!snakeList.isEmpty()) {
