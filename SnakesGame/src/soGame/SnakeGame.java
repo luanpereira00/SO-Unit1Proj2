@@ -40,12 +40,8 @@ public class SnakeGame {
 	 * @return True if collided, false in others cases
 	 */
 	public boolean checkColision(DrawingSnake d) {
-		if(hadColided(d)) {
-			//FIXME consertar esse sendToErase
-			//sendToErase(d);
-			//System.out.println("Colidiu!");
-			return true;
-		}else return false;
+		if(hadColided(d)) return true;
+		else return false;
 	}
 	
 	/**
@@ -158,30 +154,29 @@ public class SnakeGame {
 			//TODO Alerta visual da morte de uma cobrinha
 			boolean tRemove = false;
 			DrawingSnake r = new DrawingSnake(board, 15);
-			//game.board.wait(100);
-			for(DrawingSnake d : snakeList) {
-				d.printSnake();
-				
+			
+			for(DrawingSnake d : snakeList) {			
 				Thread t = new Thread(d); 
 				t.start();
-				//board.wait(10);
+				
+				board.wait(10);
+				
 				if(checkColision(d)) {
 					d.stop = true;
 					tRemove = true;
 					r = d;
 					break;								
-				}
-				//FIXME tempo de espera na thread, muito lento no comeco e rapido demais no fim
-				board.wait(20);
+				}				
 			}
 			
 			if(tRemove) {
-				//FIXME Resolver remocao das cobrinhas
 				sendToErase(r);
 				snakeList.remove(r);
 				
 			}
 		}
+		
+		board.gameOverScreen();
 	}
 	
 	public void gameHP () {
@@ -191,20 +186,19 @@ public class SnakeGame {
 			//TODO Alerta visual da morte de uma cobrinha
 			boolean tRemove = false;
 			DrawingSnake r = new DrawingSnake(board, 10);
-			//game.board.wait(100);
+			
 			for(DrawingSnake d : snakeList) {
 				Thread t = new Thread(d);
 				t.start();
 				
 				board.wait(100);
+				
 				if(checkColision(d)) {
 					d.stop = true;
 					tRemove = true;
 					r = d;
-					break;								
+					break;
 				}
-				//FIXME tempo de espera na thread, muito lento no comeco e rapido demais no fim
-				board.wait(20);
 			}
 			
 			if(tRemove) {
@@ -225,7 +219,7 @@ public class SnakeGame {
 		System.out.println("|-------------------------------|");
 		System.out.println("| ( 2 ) Humam Player            |");
 		System.out.println("|-------------------------------|");
-		System.out.println("| ( 0 ) Exit                    |");
+		System.out.println("| ( 0 ) QUIT                    |");
 		System.out.println("+-------------------------------+");
 	}
 
@@ -235,6 +229,8 @@ public class SnakeGame {
 		
 		//FIXME Interface Toda
 		while(!exit) {
+			game.board.gameChoices();
+			
 			int choice;
 			Scanner s = new Scanner(System.in);
 			game.telaChoices();

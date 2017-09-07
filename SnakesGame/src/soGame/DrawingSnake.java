@@ -17,7 +17,9 @@ public class DrawingSnake implements Runnable {
 		stop = false; 
 	}
 	
-	public void run () {		
+	public void run () {
+		printSnake();
+		
 		if(!stop) movementSnake();
 	}
 	

@@ -18,7 +18,7 @@ public class Screen implements KeyListener{
     public Graphics2D graphic;
     public Color backgroundColor;
     private Image canvasImage;
-    private final int width = 1200;
+    private final int width = 1100;
     private final int height = 500;
     private int pxScale;
     public int movimentSide;
@@ -132,19 +132,36 @@ public class Screen implements KeyListener{
     }
 
     private void firstScreen () {
-    	setFont(new Font("helvetica", Font.BOLD, 24));
+    	setFont(new Font("Times New Roman", Font.BOLD, 24));
     	setForegroundColor(Color.red);
     	drawString("Welcome to Snake's Game", width/2 - 150, height/2);
+    	//Image snakeImg = new Image();
+    	//createImage("../image/snake.jpg");
+    	   	
     	wait(3000);
     	erase();    	
     }
     
     public void gameOverScreen () {
-    	setFont(new Font("helvetica", Font.BOLD, 24));
+    	setFont(new Font("Times New Roman", Font.BOLD, 24));
     	setForegroundColor(Color.red);
     	drawString("Game Over :(", width/2 - 50, height/2);
     	wait(1000);
     	erase();    	
+    }
+    
+    public void gameChoices () {
+    	setFont(new Font("Times New Roman", Font.BOLD, 24));
+    	setForegroundColor(Color.red);
+    	drawString(" Choices Menu ", width/2 - 40, height/2 - 40);
+    	
+    	setForegroundColor(Color.white);
+    	setFont(new Font("Times New Roman", Font.PLAIN, 20));
+    	drawString(" 1 - Artifitial Intelligence ", width/2 - 100, height/2);
+    	drawString(" 2 - Humam Player ", width/2 - 100, height/2 + 20);
+    	drawString(" 0 - QUIT ", width/2 - 100, height/2 + 40);
+    	
+    	setForegroundColor(Color.red);
     }
     
     //FIXME Definir paredes de forma dinâmica (talvez cobrinhas que não se mexem?) 
