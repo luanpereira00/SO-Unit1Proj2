@@ -10,13 +10,11 @@ public class DrawingSnake implements Runnable {
     private Screen screen;
     private int pxScale;
     public boolean stop;
-    public int movimentSide; 
 	
 	public DrawingSnake (Screen screen, int pxScale) {
 		this.screen = screen;
 		this.pxScale = pxScale;
 		stop = false; 
-		movimentSide = 0;
 	}
 	
 	public void run () {
@@ -157,8 +155,8 @@ public class DrawingSnake implements Runnable {
 			// 3 = right
 			// 4 = right
 			 
-			if (movimentSide == 1 || movimentSide == 2) return moveToLeft();
-			if (movimentSide == 3 || movimentSide == 4) return moveToRight();
+			if (screen.movimentSide == 1 || screen.movimentSide == 2) return moveToLeft();
+			if (screen.movimentSide == 3 || screen.movimentSide == 4) return moveToRight();
 			return moveForward();
 		}
 	}

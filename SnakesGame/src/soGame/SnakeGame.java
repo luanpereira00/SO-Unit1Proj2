@@ -139,8 +139,6 @@ public class SnakeGame {
 		for(Rectangle r: d.getSnake().body) {
 			board.erase(r);
 		}
-		//TODO - Falta ainda tirar o body do Screen, ele só não está desennhado mas ainda existe
-		//d.getSnake().body.clear();
 	}
 	
 	public void gameAI () {
@@ -185,7 +183,6 @@ public class SnakeGame {
 	}
 	
 	public void gameHP () {
-		System.out.println("Not yet amigo! :(");
 		addDSnake(Color.pink, true);
 		
 		while (!snakeList.isEmpty()) {
@@ -195,9 +192,9 @@ public class SnakeGame {
 			//game.board.wait(100);
 			for(DrawingSnake d : snakeList) {
 				Thread t = new Thread(d);
-				verifyKeyPressed();
 				t.start();
-				board.wait(50);
+				
+				board.wait(100);
 				if(checkColision(d)) {
 					d.stop = true;
 					tRemove = true;
@@ -206,53 +203,17 @@ public class SnakeGame {
 				}
 				//FIXME tempo de espera na thread, muito lento no comeco e rapido demais no fim
 				board.wait(20);
-				d.movimentSide = 0;
+				board.movimentSide = 0;
 			}
 			
 			if(tRemove) {
 				//FIXME Resolver remocao das cobrinhas
 				sendToErase(r);
 				snakeList.remove(r);
-				
 			}
 		}
-	}
-	
-	/**
-	 * Method to verify the key pressed to moviment the snake
-	 */
-	public void verifyKeyPressed () { 
-//		AWTEventListener listener = new AWTEventListener();  
-//    
-//		int code;
-//	
-//		if (listener instanceof KeyEvent) {  
-//			KeyEvent ke = (KeyEvent) listener;  
-//            if (ke.getID() == KeyEvent.KEY_PRESSED) {  
-//            	code = (ke.getKeyCode());  
-//            } else if (ke.getID() == KeyEvent.KEY_RELEASED) {  
-//            	code = (ke.getKeyCode());  
-//            }       
-//		}
-//		
-//		
-//		switch (code) {  
-//	            case KeyEvent.VK_UP:  
-//	                //System.out.println("^"<img src="http://javafree.uol.com.br/forum/images/smiles/icon_wink.gif">;  
-//	                break;  
-//	            case KeyEvent.VK_DOWN:  
-//	                //System.out.println("v"<img src="http://javafree.uol.com.br/forum/images/smiles/icon_wink.gif">;  
-//	                break;  
-//	            case KeyEvent.VK_LEFT:  
-//	                //System.out.print("<"<img src="http://javafree.uol.com.br/forum/images/smiles/icon_wink.gif">;  
-//	                break;  
-//	            case KeyEvent.VK_RIGHT:  
-//	                //System.out.print(">"<img src="http://javafree.uol.com.br/forum/images/smiles/icon_wink.gif">;  
-//	                break;  
-//	            default:  
-//	                // ignore  
-//	                break;  
-//	        }		
+		
+		board.gameOverScreen();
 	}
 	
 	public void telaChoices () {

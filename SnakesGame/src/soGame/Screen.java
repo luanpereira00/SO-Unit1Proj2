@@ -1,17 +1,18 @@
 package soGame;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 /**
  * Class Canvas - a class to allow for simple graphical 
  * drawing on a canvas.
  * 
- * @author Michael Kolling (mik)
- * @author Bruce Quig
- *
+ * @author Shirley Ohara Telémaco de Freitas
+ * @author Joaliton Luan Pereira Ferreira
  * @version 2008.03.30
  */
-public class Screen {
+public class Screen implements KeyListener{
     public JFrame frame;
     private CanvasPane canvas;
     public Graphics2D graphic;
@@ -20,6 +21,7 @@ public class Screen {
     private final int width = 1200;
     private final int height = 600;
     private int pxScale;
+    public int movimentSide;
     
     /**
      * Create a Screen      
@@ -27,6 +29,8 @@ public class Screen {
     public Screen(int pxScale) {
     	this.pxScale = pxScale;
     	frame = new JFrame();
+    	
+    	frame.addKeyListener(this);
         canvas = new CanvasPane();
         frame.setContentPane(canvas);
         canvas.setPreferredSize(new Dimension(width, height));
@@ -34,6 +38,7 @@ public class Screen {
         frame.pack();
         setVisible(true); 
         firstScreen();
+        movimentSide = 0;
     }
      
     public int getWidth() {
@@ -131,6 +136,14 @@ public class Screen {
     	setForegroundColor(Color.red);
     	drawString("Welcome to Snake's Game", width/2 - 150, height/2);
     	wait(3000);
+    	erase();    	
+    }
+    
+    public void gameOverScreen () {
+    	setFont(new Font("helvetica", Font.BOLD, 24));
+    	setForegroundColor(Color.red);
+    	drawString("Game Over", width/2 - 50, height/2);
+    	wait(1000);
     	erase();    	
     }
     
@@ -257,4 +270,53 @@ public class Screen {
             g.drawImage(canvasImage, 0, 0, null);
         }
     }
+
+	public void keyPressed(KeyEvent e) {
+        int keyCode = e.getKeyCode();
+        movimentSide = 0;
+        
+        if (keyCode == KeyEvent.VK_UP) {
+//           System.out.println("Para cima");
+        		movimentSide = 1;
+        }
+        if (keyCode == KeyEvent.VK_DOWN) {
+//        	System.out.println("Para Baixo!");
+        	movimentSide = 4;
+        }
+        if (keyCode == KeyEvent.VK_LEFT) {
+//        	System.out.println("Para Esquerda!");
+        	movimentSide = 2;
+        }
+        if (keyCode == KeyEvent.VK_RIGHT) {
+//        	System.out.println("Para Direita!");
+        	movimentSide = 3;
+        }
+	}
+
+	public void keyReleased(KeyEvent e) {
+		
+	}
+
+	public void keyTyped(KeyEvent e) {
+		int keyCode = e.getKeyCode();
+        movimentSide = 0;
+        
+        if (keyCode == KeyEvent.VK_UP) {
+//           System.out.println("Para cima");
+        		movimentSide = 1;
+        }
+        if (keyCode == KeyEvent.VK_DOWN) {
+//        	System.out.println("Para Baixo!");
+        	movimentSide = 4;
+        }
+        if (keyCode == KeyEvent.VK_LEFT) {
+//        	System.out.println("Para Esquerda!");
+        	movimentSide = 2;
+        }
+        if (keyCode == KeyEvent.VK_RIGHT) {
+//        	System.out.println("Para Direita!");
+        	movimentSide = 3;
+        }
+	}
+
 }
