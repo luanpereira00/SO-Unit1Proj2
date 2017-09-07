@@ -159,9 +159,43 @@ public class DrawingSnake implements Runnable {
 			// 2 = left
 			// 3 = right
 			// 4 = right
-			 
-			if (screen.movimentSide == 1 || screen.movimentSide == 2) return moveToLeft();
-			if (screen.movimentSide == 3 || screen.movimentSide == 4) return moveToRight();
+			
+			//FIXME Aplicar boas práticas, acoplamento, coesão e modularização
+			if(snake.getHead().getX()==snake.getTail().getX()) {	
+				//If a snake is on vertical
+				if(snake.getHead().getY()-snake.getTail().getY()>0) { 
+					//If a snake is headed for down
+					if (screen.movimentSide == 0 || screen.movimentSide == 1 || screen.movimentSide == 4) return moveForward();
+					if (screen.movimentSide == 2) return moveToRight();
+					if (screen.movimentSide == 3) return moveToLeft();
+				}
+				else {													
+					//If a snake is headed for up, by consequence
+					if (screen.movimentSide == 0 || screen.movimentSide == 1 || screen.movimentSide == 4) return moveForward();
+					if (screen.movimentSide == 2) return moveToLeft();
+					if (screen.movimentSide == 3) return moveToRight();
+				}		
+			}
+			
+			else { 													
+				//If a snake is on horizontal, by consequence
+				if(snake.getHead().getX()-snake.getTail().getX()>0) { 
+					//If a snake is headed for right
+					if (screen.movimentSide == 0) return moveForward();
+					if (screen.movimentSide == 1) return moveToLeft();
+					if (screen.movimentSide == 2) return moveForward();
+					if (screen.movimentSide == 3) return moveForward();
+					if (screen.movimentSide == 4) return moveToRight();
+				}
+				else {													
+					//If a snake is headed for left, by consequence
+					if (screen.movimentSide == 0) return moveForward();
+					if (screen.movimentSide == 1) return moveToRight();
+					if (screen.movimentSide == 2) return moveForward();
+					if (screen.movimentSide == 3) return moveForward();
+					if (screen.movimentSide == 4) return moveToLeft();
+				}
+			}
 			return moveForward();
 		}
 	}
