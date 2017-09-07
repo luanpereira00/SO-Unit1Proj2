@@ -142,6 +142,7 @@ public class DrawingSnake implements Runnable {
 	private Rectangle chooseNextHeadPosition() {
 		Random rnd = new Random();
 		int chooser = rnd.nextInt();
+		Rectangle rect = new Rectangle();
 		
 		if(!snake.userOrIA) { // false = IA
 			if (chooser<0) chooser*=-1;
@@ -149,31 +150,47 @@ public class DrawingSnake implements Runnable {
 			if(chooser>1) { 			//80%
 				return moveForward();
 			} else if(chooser == 0) { 	//10%
-				return moveToLeft();
+				rect = moveToLeft();
+				//Melhorando IA, elas não batem em si próprias
+				for(int i = 1; i < snake.body.size(); i++) {
+					Rectangle r = snake.body.get(i);
+					if(rect.equals(r)) return moveForward();
+				}
+				return rect;
 			} else { 					//10%
-				return moveToRight();
+				rect = moveToRight();
+				//Melhorando IA, elas nao batem em si proprias
+				for(int i = 1; i < snake.body.size(); i++) {
+					Rectangle r = snake.body.get(i);
+					if(rect.equals(r)) return moveForward();
+				}
+				return rect;
 			}
 		} else { // true = user
-			// 0 = forward
-			// 1 = left
+			// 0 = default
+			// 1 = up
 			// 2 = left
 			// 3 = right
-			// 4 = right
+			// 4 = down
 			
 			//FIXME Aplicar boas práticas, acoplamento, coesão e modularização
 			if(snake.getHead().getX()==snake.getTail().getX()) {	
 				//If a snake is on vertical
 				if(snake.getHead().getY()-snake.getTail().getY()>0) { 
 					//If a snake is headed for down
-					if (screen.movimentSide == 0 || screen.movimentSide == 1 || screen.movimentSide == 4) return moveForward();
+					if (screen.movimentSide == 0) return moveForward();
+					if (screen.movimentSide == 1) return moveForward();
 					if (screen.movimentSide == 2) return moveToRight();
 					if (screen.movimentSide == 3) return moveToLeft();
+					if (screen.movimentSide == 4) return moveForward();
 				}
 				else {													
 					//If a snake is headed for up, by consequence
-					if (screen.movimentSide == 0 || screen.movimentSide == 1 || screen.movimentSide == 4) return moveForward();
+					if (screen.movimentSide == 0) return moveForward();
+					if (screen.movimentSide == 1) return moveForward();
 					if (screen.movimentSide == 2) return moveToLeft();
 					if (screen.movimentSide == 3) return moveToRight();
+					if (screen.movimentSide == 4) return moveForward();
 				}		
 			}
 			
