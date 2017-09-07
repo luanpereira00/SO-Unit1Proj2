@@ -203,7 +203,6 @@ public class SnakeGame {
 				}
 				//FIXME tempo de espera na thread, muito lento no comeco e rapido demais no fim
 				board.wait(20);
-				board.movimentSide = 0;
 			}
 			
 			if(tRemove) {

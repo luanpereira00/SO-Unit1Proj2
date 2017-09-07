@@ -142,7 +142,7 @@ public class Screen implements KeyListener{
     public void gameOverScreen () {
     	setFont(new Font("helvetica", Font.BOLD, 24));
     	setForegroundColor(Color.red);
-    	drawString("Game Over", width/2 - 50, height/2);
+    	drawString("Game Over :(", width/2 - 50, height/2);
     	wait(1000);
     	erase();    	
     }
