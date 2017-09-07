@@ -2,11 +2,9 @@ package soGame;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.awt.event.AWTEventListener;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 public class SnakeGame {
@@ -23,7 +21,6 @@ public class SnakeGame {
 		board = new Screen(pxScale);
 		snakeList = new ArrayList<DrawingSnake>();	
 	}
-
 	
 	/**
 	 * Add a snake to snakeList's array
@@ -133,6 +130,18 @@ public class SnakeGame {
 		return false;
 	}
 	
+	public boolean ateApple (Rectangle apple) {
+		Snake s = snakeList.get(0).getSnake(); 
+		if(s.getHead().equals(apple)){
+		
+			// TODO Falta implemetar a parte de incrememtar a maça no corpo
+		
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
 	public void sendToErase(DrawingSnake d) {		
 		for(Rectangle r: d.getSnake().body) {
 			board.erase(r);
@@ -161,9 +170,9 @@ public class SnakeGame {
 			for(DrawingSnake d : snakeList) {			
 				Thread t = new Thread(d); 
 				t.start();
-				
+
 				board.wait(10);
-				
+								
 				if(checkColision(d)) {
 					d.stop = true;
 					tRemove = true;
@@ -185,24 +194,36 @@ public class SnakeGame {
 	public void gameHP () {
 		board.erase();
 		addDSnake(Color.pink, true);
+		boolean thereIsApple = false;
 		
 		while (!snakeList.isEmpty()) {
 			//TODO Alerta visual da morte de uma cobrinha
 			boolean tRemove = false;
 			DrawingSnake r = new DrawingSnake(board, 10);
+			Rectangle apple = new Rectangle();
 			
+			if(!thereIsApple) {
+				Dimension d = r.randDimension();
+				apple = new Rectangle((int)d.getWidth(), (int)d.getHeight(), pxScale, pxScale);
+				board.fill(apple);
+				thereIsApple = true;
+			}
+		
 			for(DrawingSnake d : snakeList) {
 				Thread t = new Thread(d);
 				t.start();
 				
-				board.wait(100);
-				
+				board.wait(150);
+
 				if(checkColision(d)) {
 					d.stop = true;
 					tRemove = true;
 					r = d;
 					break;
 				}
+				
+				if(ateApple(apple)) thereIsApple = false;
+
 			}
 			
 			if(tRemove) {
@@ -222,6 +243,8 @@ public class SnakeGame {
 		System.out.println("| ( 1 ) Artifitial Intelligence |");
 		System.out.println("|-------------------------------|");
 		System.out.println("| ( 2 ) Humam Player            |");
+		System.out.println("|-------------------------------|");
+		System.out.println("| ( 3 ) Humam vs. AI            |");
 		System.out.println("|-------------------------------|");
 		System.out.println("| ( 0 ) QUIT                    |");
 		System.out.println("+-------------------------------+");

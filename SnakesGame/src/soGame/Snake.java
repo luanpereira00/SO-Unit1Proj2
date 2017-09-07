@@ -52,7 +52,7 @@ public class Snake{
 	* Add snake's head
 	* @param head Snake's head
 	*/
-	private void addHead(Rectangle head){
+	public void addHead(Rectangle head){
 		body.add(0, head);
 	}
 	
