@@ -145,7 +145,7 @@ public class Screen implements KeyListener{
     	try {
     		File file = new File("../image/Imagem1.png");
 	    	BufferedImage image = ImageIO.read(file);
-	    	drawImage(image, width/2 - 50, height/2 - 140);
+	    	drawImage(image, width/2 - 60, height/2 - 140);
     	} catch (Exception e) {
     		System.out.println(e);
     	}
