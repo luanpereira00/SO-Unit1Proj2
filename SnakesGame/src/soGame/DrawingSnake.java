@@ -118,6 +118,15 @@ public class DrawingSnake implements Runnable {
 		return body;
 	}
 	
+	public boolean ateApple(Rectangle apple) {
+		if(snake.body.get(snake.body.size()-1).equals(apple)) {
+			snake.body.add(apple);
+			return true;
+		}
+		
+		return false;
+	}
+	
 	public void printSnake() {
 		for(Rectangle r : snake.body) {
 			screen.setForegroundColor(snake.getColor());
@@ -129,7 +138,13 @@ public class DrawingSnake implements Runnable {
 	 * Movement the snake in this class
 	 */
 	private void movementSnake() {
+		int chanceToDontDie=0;
 		Rectangle rect = chooseNextHeadPosition();
+		while (checkSelfColision(rect) && chanceToDontDie<5 || checkWallColision(rect) && chanceToDontDie<5) {
+			rect = chooseNextHeadPosition(); //new chance to snakes die less
+			chanceToDontDie++;
+		}
+		
 		Rectangle r = snake.moviment(rect);
 		screen.erase(r);
 		screen.movimentSide = 0;
@@ -142,29 +157,17 @@ public class DrawingSnake implements Runnable {
 	private Rectangle chooseNextHeadPosition() {
 		Random rnd = new Random();
 		int chooser = rnd.nextInt();
-		Rectangle rect = new Rectangle();
-		
+	
 		if(!snake.userOrIA) { // false = IA
 			if (chooser<0) chooser*=-1;
 			chooser = chooser % 10; 
 			if(chooser>1) { 			//80%
 				return moveForward();
 			} else if(chooser == 0) { 	//10%
-				rect = moveToLeft();
-				//Melhorando IA, elas não batem em si próprias
-				for(int i = 1; i < snake.body.size(); i++) {
-					Rectangle r = snake.body.get(i);
-					if(rect.equals(r)) return moveForward();
-				}
-				return rect;
+				return moveToLeft();
+				//Melhorando IA, elas não batem em si proprias, em teoria!
 			} else { 					//10%
-				rect = moveToRight();
-				//Melhorando IA, elas nao batem em si proprias
-				for(int i = 1; i < snake.body.size(); i++) {
-					Rectangle r = snake.body.get(i);
-					if(rect.equals(r)) return moveForward();
-				}
-				return rect;
+				return moveToRight();
 			}
 		} else { // true = user
 			// 0 = default
@@ -174,9 +177,9 @@ public class DrawingSnake implements Runnable {
 			// 4 = down
 			
 			//FIXME Aplicar boas práticas, acoplamento, coesão e modularização
-			if(snake.getHead().getX()==snake.getTail().getX()) {	
+			if(snake.getHead().getX()==snake.getNeck().getX()) {	
 				//If a snake is on vertical
-				if(snake.getHead().getY()-snake.getTail().getY()>0) { 
+				if(snake.getHead().getY()-snake.getNeck().getY()>0) { 
 					//If a snake is headed for down
 					if (screen.movimentSide == 0) return moveForward();
 					if (screen.movimentSide == 1) return moveForward();
@@ -196,7 +199,7 @@ public class DrawingSnake implements Runnable {
 			
 			else { 													
 				//If a snake is on horizontal, by consequence
-				if(snake.getHead().getX()-snake.getTail().getX()>0) { 
+				if(snake.getHead().getX()-snake.getNeck().getX()>0) { 
 					//If a snake is headed for right
 					if (screen.movimentSide == 0) return moveForward();
 					if (screen.movimentSide == 1) return moveToLeft();
@@ -218,6 +221,19 @@ public class DrawingSnake implements Runnable {
 	}
 	
 	/**
+	 * Check if a drawing snake passed had collided with his snake's body
+	 * @param toCheck The drawing snake that contains the snake that is going to be checked
+	 * @return True if collided, false in others cases
+	 */
+	public boolean checkSelfColision(Rectangle rect) {
+		for(int i = 1; i < snake.body.size(); i++) {
+			Rectangle r = snake.body.get(i);
+			if(rect.equals(r)) return true;
+		}
+		return false;
+	}
+	
+	/**
 	 * Move a snake for front, based on for where it is headed
 	 * @return The removed tail
 	 */
@@ -225,9 +241,9 @@ public class DrawingSnake implements Runnable {
 		int xPos=0;
 		int yPos=0;
 		
-		if(snake.getHead().getX()==snake.getTail().getX()) {	
+		if(snake.getHead().getX()==snake.getNeck().getX()) {	
 			//If a snake is on vertical
-			if(snake.getHead().getY()-snake.getTail().getY()>0) { 
+			if(snake.getHead().getY()-snake.getNeck().getY()>0) { 
 				//If a snake is headed for down
 				xPos = (int)snake.getHead().getX();
 				yPos = (int)snake.getHead().getY()+pxScale;
@@ -243,7 +259,7 @@ public class DrawingSnake implements Runnable {
 		
 		else { 													
 			//If a snake is on horizontal, by consequence
-			if(snake.getHead().getX()-snake.getTail().getX()>0) { 
+			if(snake.getHead().getX()-snake.getNeck().getX()>0) { 
 				//If a snake is headed for right
 				xPos = (int)snake.getHead().getX()+pxScale;
 				yPos = (int)snake.getHead().getY();
@@ -265,9 +281,9 @@ public class DrawingSnake implements Runnable {
 	private Rectangle moveToLeft() {
 		int xPos=0;
 		int yPos=0;
-		if(snake.getHead().getX()==snake.getTail().getX()) {	
+		if(snake.getHead().getX()==snake.getNeck().getX()) {	
 			//If a snake is on vertical
-			if(snake.getHead().getY()-snake.getTail().getY()>0) { 
+			if(snake.getHead().getY()-snake.getNeck().getY()>0) { 
 				//If a snake is headed for down
 				xPos = (int)snake.getHead().getX()+pxScale;
 				yPos = (int)snake.getHead().getY();
@@ -282,7 +298,7 @@ public class DrawingSnake implements Runnable {
 		}
 		else { 
 			//If a snake is on horizontal, by consequence
-			if(snake.getHead().getX()-snake.getTail().getX()>0) { 
+			if(snake.getHead().getX()-snake.getNeck().getX()>0) { 
 				//If a snake is headed for right
 				xPos = (int)snake.getHead().getX();
 				yPos = (int)snake.getHead().getY()-pxScale;
@@ -304,9 +320,9 @@ public class DrawingSnake implements Runnable {
 	private Rectangle moveToRight() {
 		int xPos=0;
 		int yPos=0;
-		if(snake.getHead().getX()==snake.getTail().getX()) {	
+		if(snake.getHead().getX()==snake.getNeck().getX()) {	
 			//If a snake is on vertical
-			if(snake.getHead().getY()-snake.getTail().getY()>0) { 
+			if(snake.getHead().getY()-snake.getNeck().getY()>0) { 
 				//If a snake is headed for down
 				xPos = (int)snake.getHead().getX()-pxScale;
 				yPos = (int)snake.getHead().getY();
@@ -321,7 +337,7 @@ public class DrawingSnake implements Runnable {
 		}
 		else {
 			//If a snake is on horizontal, by consequence
-			if(snake.getHead().getX()-snake.getTail().getX()>0) { 
+			if(snake.getHead().getX()-snake.getNeck().getX()>0) { 
 				//If a snake is headed for right
 				xPos = (int)snake.getHead().getX();
 				yPos = (int)snake.getHead().getY()+pxScale;
@@ -344,4 +360,57 @@ public class DrawingSnake implements Runnable {
 		return snake;
 	}
 
+	/**
+	 * Check if a rectangle passed had collided with some wall
+	 * @param rect The rectangle to test
+	 * @return True if collided, false in others cases
+	 */
+	public boolean checkWallColision(Rectangle rect) {
+		if(checkTopColision(rect)) return true;
+		if(checkBottomColision(rect)) return true;
+		if(checkLeftColision(rect)) return true;
+		if(checkRightColision(rect)) return true;
+		return false;
+	}
+	
+	/**
+	 * Check if a rectangle passed had collided in top of screen
+	 * @param rect The rectangle to test
+	 * @return True if collided, false in others cases
+	 */
+	private boolean checkTopColision(Rectangle rect) {
+		if((int)rect.getY()==0) return true;
+		return false;
+	}
+	
+	/**
+	 * Check if a rectangle passed had collided in bottom of screen
+	 * @param rect The rectangle to test
+	 * @return True if collided, false in others cases
+	 */
+	private boolean checkBottomColision(Rectangle rect) {
+		if((int)rect.getY()==screen.getHeight()-pxScale) return true;
+		return false;
+	}
+	
+	/**
+	 * Check if a rectangle passed had collided in left of screen
+	 * @param rect The rectangle to test
+	 * @return True if collided, false in others cases
+	 */
+	private boolean checkLeftColision(Rectangle rect) {
+		if((int)rect.getX()==0) return true;
+		return false;
+	}
+	
+	/**
+	 * Check if a rectangle passed had collided in right of screen
+	 * @param rect The rectangle to test
+	 * @return True if collided, false in others cases
+	 */
+	private boolean checkRightColision(Rectangle rect) {
+		if((int)rect.getX()==screen.getWidth()-pxScale) return true;
+		return false;
+	}
+	
 }

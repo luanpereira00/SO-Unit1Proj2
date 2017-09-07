@@ -23,8 +23,8 @@ public class Screen implements KeyListener{
     public Graphics2D graphic;
     public Color backgroundColor;
     private Image canvasImage;
-    private final int width = 1100;
-    private final int height = 500;
+    private final int width = 650;
+    private final int height = 650;
     private int pxScale;
     public int movimentSide;
     

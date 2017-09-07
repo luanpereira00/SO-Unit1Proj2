@@ -35,7 +35,7 @@ public class Snake{
 		return body.get(0);
 	}
 	
-	public Rectangle getTail() {
+	public Rectangle getNeck() {
 		return body.get(1);
 	}
 	
@@ -55,6 +55,7 @@ public class Snake{
 	public void addHead(Rectangle head){
 		body.add(0, head);
 	}
+
 	
 	/**
 	* Movement the snake to some direction

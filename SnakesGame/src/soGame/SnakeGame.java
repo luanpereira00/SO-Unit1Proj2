@@ -11,6 +11,8 @@ public class SnakeGame {
 	private ArrayList<DrawingSnake> snakeList; //An ArrayList with all Snakes playable
 	public Screen board; //The board of the game
 	public int pxScale;  //Pixel scale of rectangles of snake's body
+	Rectangle apple;
+	boolean thereIsApple;
 	
 	/**
 	 * Constructor for SnakeGame class
@@ -20,6 +22,8 @@ public class SnakeGame {
 		pxScale = 10;
 		board = new Screen(pxScale);
 		snakeList = new ArrayList<DrawingSnake>();	
+		apple = new Rectangle();
+		thereIsApple = false;
 	}
 	
 	/**
@@ -126,20 +130,10 @@ public class SnakeGame {
 					if(rect.equals(r)) return true;
 				}
 			}
+			
 		}	
+		if(toCheck.ateApple(apple)) thereIsApple = false;
 		return false;
-	}
-	
-	public boolean ateApple (Rectangle apple) {
-		Snake s = snakeList.get(0).getSnake(); 
-		if(s.getHead().equals(apple)){
-		
-			// TODO Falta implemetar a parte de incrememtar a maça no corpo
-		
-			return true;
-		}else {
-			return false;
-		}
 	}
 	
 	public void sendToErase(DrawingSnake d) {		
@@ -194,17 +188,18 @@ public class SnakeGame {
 	public void gameHP () {
 		board.erase();
 		addDSnake(Color.pink, true);
-		boolean thereIsApple = false;
 		
 		while (!snakeList.isEmpty()) {
 			//TODO Alerta visual da morte de uma cobrinha
 			boolean tRemove = false;
 			DrawingSnake r = new DrawingSnake(board, 10);
-			Rectangle apple = new Rectangle();
+			
 			
 			if(!thereIsApple) {
-				Dimension d = r.randDimension();
-				apple = new Rectangle((int)d.getWidth(), (int)d.getHeight(), pxScale, pxScale);
+				do {
+					Dimension d = r.randDimension();
+					apple = new Rectangle((int)d.getWidth(), (int)d.getHeight(), pxScale, pxScale);
+				}while(checkWallColision(apple));
 				board.fill(apple);
 				thereIsApple = true;
 			}
@@ -221,8 +216,6 @@ public class SnakeGame {
 					r = d;
 					break;
 				}
-				
-				if(ateApple(apple)) thereIsApple = false;
 
 			}
 			
