@@ -130,6 +130,7 @@ public class DrawingSnake implements Runnable {
 		Rectangle rect = chooseNextHeadPosition();
 		Rectangle r = snake.moviment(rect);
 		screen.erase(r);
+		screen.movimentSide = 0;
 	}
 	
 	/**
