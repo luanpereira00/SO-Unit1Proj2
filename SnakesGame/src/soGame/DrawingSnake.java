@@ -17,12 +17,7 @@ public class DrawingSnake implements Runnable {
 		stop = false; 
 	}
 	
-	public void run () {
-		for(Rectangle r : snake.body) {
-			screen.setForegroundColor(snake.getColor());
-			screen.fill(r);
-		}
-		
+	public void run () {		
 		if(!stop) movementSnake();
 	}
 	
@@ -119,6 +114,13 @@ public class DrawingSnake implements Runnable {
 		}
 		
 		return body;
+	}
+	
+	public void printSnake() {
+		for(Rectangle r : snake.body) {
+			screen.setForegroundColor(snake.getColor());
+			screen.fill(r);
+		}
 	}
 	
 	/**

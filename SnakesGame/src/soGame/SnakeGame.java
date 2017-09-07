@@ -157,12 +157,14 @@ public class SnakeGame {
 		while (!snakeList.isEmpty()) {
 			//TODO Alerta visual da morte de uma cobrinha
 			boolean tRemove = false;
-			DrawingSnake r = new DrawingSnake(board, 10);
+			DrawingSnake r = new DrawingSnake(board, 15);
 			//game.board.wait(100);
 			for(DrawingSnake d : snakeList) {
+				d.printSnake();
+				
 				Thread t = new Thread(d); 
 				t.start();
-				board.wait(50);
+				//board.wait(10);
 				if(checkColision(d)) {
 					d.stop = true;
 					tRemove = true;
@@ -220,7 +222,7 @@ public class SnakeGame {
 		System.out.println("+-------------------------------+");
 		System.out.println("|         Game's Options        |");
 		System.out.println("+-------------------------------+");
-		System.out.println("| ( 1 ) Antifitial Intelligence |");
+		System.out.println("| ( 1 ) Artifitial Intelligence |");
 		System.out.println("|-------------------------------|");
 		System.out.println("| ( 2 ) Humam Player            |");
 		System.out.println("|-------------------------------|");
