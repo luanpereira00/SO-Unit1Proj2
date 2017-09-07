@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.event.AWTEventListener;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 public class SnakeGame {
 	private ArrayList<DrawingSnake> snakeList; //An ArrayList with all Snakes playable
@@ -15,8 +16,9 @@ public class SnakeGame {
 	
 	/**
 	 * Constructor for SnakeGame class
+	 * @throws IOException 
 	 */
-	public SnakeGame(){
+	public SnakeGame() {
 		pxScale = 10;
 		board = new Screen(pxScale);
 		snakeList = new ArrayList<DrawingSnake>();	

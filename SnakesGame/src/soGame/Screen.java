@@ -1,8 +1,13 @@
 package soGame;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Class Canvas - a class to allow for simple graphical 
@@ -25,6 +30,7 @@ public class Screen implements KeyListener{
     
     /**
      * Create a Screen      
+     * @throws IOException 
      */
     public Screen(int pxScale) {
     	this.pxScale = pxScale;
@@ -135,9 +141,17 @@ public class Screen implements KeyListener{
     	setFont(new Font("Times New Roman", Font.BOLD, 24));
     	setForegroundColor(Color.red);
     	drawString("Welcome to Snake's Game", width/2 - 150, height/2);
-    	//Image snakeImg = new Image();
-    	//createImage("../image/snake.jpg");
-    	   	
+    	
+    	try {
+    		File file = new File("../image/Imagem1.png");
+	    	BufferedImage image = ImageIO.read(file);
+	    	drawImage(image, width/2 - 50, height/2 - 140);
+    	} catch (Exception e) {
+    		System.out.println(e);
+    	}
+    
+    	//drawImage(img, 20, 20);
+    	
     	wait(3000);
     	erase();    	
     }
@@ -200,14 +214,14 @@ public class Screen implements KeyListener{
     
     /**
      * Draws an image onto the canvas.
-     * @param  image   the Image object to be displayed 
+     * @param  img   the Image object to be displayed 
      * @param  x       x co-ordinate for Image placement 
      * @param  y       y co-ordinate for Image placement 
      * @return  returns boolean value representing whether the image was 
      *          completely loaded 
      */
-    public boolean drawImage(Image image, int x, int y) {
-        boolean result = graphic.drawImage(image, x, y, null);
+    public boolean drawImage(Image img, int x, int y) {
+        boolean result = graphic.drawImage(img, x, y, null);
         canvas.repaint();
         return result;
     }
