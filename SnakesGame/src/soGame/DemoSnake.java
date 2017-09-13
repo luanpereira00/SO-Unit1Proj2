@@ -5,31 +5,53 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class DrawingSnake implements Runnable {
-	private Snake snake;
-    private Screen screen;
-    private int pxScale;
-    public boolean stop;
+/**
+ * @brief 	This class to do the union of the classes of the Snake Game. The fields of
+ *  		this class are: screen, snake, px scale and stop.
+ * 
+ * @author 	Shirley Ohara Telemaco de Freitas (shirleyohara@ufrn.edu.com)
+ * @author 	Joaliton Luan Pereira de Ferreira (luanpereira00@outlook.com)
+ * 
+ * @version 01.09.2018
+ */
+public class DemoSnake implements Runnable {
+	private Screen screen; 	/**< The screen where is the snake */
+	private Snake snake;    /**< The Snake */
+    private int pxScale;	/**< The px Scale of the snake */
+    public boolean stop;	/**< Determines the snake should stop */
 	
-	public DrawingSnake (Screen screen, int pxScale) {
+    /**
+     * Build a object DemoSnake
+     * @param screen
+     * @param pxScale
+     */
+	public DemoSnake (Screen screen, int pxScale) {
 		this.screen = screen;
 		this.pxScale = pxScale;
 		stop = false; 
 	}
 	
+	/**
+	 * Implementation of the method run() if the interface Runnable. It build 
+	 * draw the snake and movements its.
+	 */
 	public void run () {
 		printSnake();
 		
 		if(!stop) movementSnake();
 	}
 	
+	/**
+	 * Build the snake in the screen
+	 * @param color
+	 * @param userOrIA
+	 */
 	public void buildSnake (Color color, boolean userOrIA) {
 		Dimension start = randDimension();
 		Dimension end = randDimensionInLine(start, 10);
 		snake = new Snake(color, createBody(start, end), userOrIA);
 	}
-	
-	//FIXME Impedir que sejam criadas proximas a parede
+
 	/**
 	 * Creates a random dimension for start of snake's body
 	 * @return Return a dimension
@@ -118,8 +140,13 @@ public class DrawingSnake implements Runnable {
 		return body;
 	}
 	
+	/**
+	 * Check if the snake ate the appple.
+	 * @param 	apple Rectangle - The apple
+	 * @return 	true/false - True if the snake ate the apple, false in the otherwise
+	 */
 	public boolean ateApple(Rectangle apple) {
-		if(snake.body.get(snake.body.size()-1).equals(apple)) {
+		if(snake.body.get(0).equals(apple)) {
 			snake.body.add(apple);
 			return true;
 		}
@@ -127,6 +154,9 @@ public class DrawingSnake implements Runnable {
 		return false;
 	}
 	
+	/**
+	 * Print the snake in the screen
+	 */
 	public void printSnake() {
 		for(Rectangle r : snake.body) {
 			screen.setForegroundColor(snake.getColor());
@@ -138,7 +168,7 @@ public class DrawingSnake implements Runnable {
 	 * Movement the snake in this class
 	 */
 	private void movementSnake() {
-		int chanceToDontDie=0;
+		int chanceToDontDie = 0;
 		Rectangle rect = chooseNextHeadPosition();
 		while (checkSelfColision(rect) && chanceToDontDie<5 || checkWallColision(rect) && chanceToDontDie<5) {
 			rect = chooseNextHeadPosition(); //new chance to snakes die less
@@ -176,7 +206,6 @@ public class DrawingSnake implements Runnable {
 			// 3 = right
 			// 4 = down
 			
-			//FIXME Aplicar boas práticas, acoplamento, coesão e modularização
 			if(snake.getHead().getX()==snake.getNeck().getX()) {	
 				//If a snake is on vertical
 				if(snake.getHead().getY()-snake.getNeck().getY()>0) { 

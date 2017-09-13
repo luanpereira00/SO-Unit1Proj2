@@ -6,31 +6,28 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.util.List;
 
 /**
- * Class Canvas - a class to allow for simple graphical 
- * drawing on a canvas.
+ * Class Canvas - a class to allow for simple graphical drawing on a canvas.
  * 
- * @author Shirley Ohara Telémaco de Freitas
- * @author Joaliton Luan Pereira Ferreira
- * @version 2008.03.30
+ * @author 	Shirley Ohara Telemaco de Freitas (shirleyohara@ufrn.edu.com)
+ * @author 	Joaliton Luan Pereira de Ferreira (luanpereira00@outlook.com)
+ * 
+ * @version 01.09.2018
  */
 public class Screen implements KeyListener{
-    public JFrame frame;
-    private CanvasPane canvas;
-    public Graphics2D graphic;
-    public Color backgroundColor;
-    private Image canvasImage;
-    private final int width = 650;
-    private final int height = 650;
-    private int pxScale;
-    public int movimentSide;
+	private final int height = 650; 	/**< The height of the screen */
+    private final int width = 650;		/**< The width of the screen */
+	public Color backgroundColor;		/**< The screen background color */
+	private CanvasPane canvas;			/**< The screen canvas */
+    public Graphics2D graphic;			/**< The graphic part of canvas */
+    private Image canvasImage;			/**< The screen image */
+    public int movimentSide; 			/**< The field to know the movement side */
+    private int pxScale;				/**< The pxScale of the board */
+    public JFrame frame;				/**< The frame of the screen*/
     
     /**
-     * Create a Screen      
-     * @throws IOException 
+     * Create a Screen
      */
     public Screen(int pxScale) {
     	this.pxScale = pxScale;
@@ -46,18 +43,21 @@ public class Screen implements KeyListener{
         firstScreen();
         movimentSide = 0;
     }
-     
+    
+    /**
+     * Return the width size of the screen 
+     * @return width
+     */
     public int getWidth() {
     	return width;
     }
     
+    /**
+     * Return the width size of the screen 
+     * @return height
+     */
     public int getHeight() {
     	return height;
-    }
-    
-    public void addLabel (JLabel label) {
-    	frame.add(label);
-    	canvas.repaint();
     }
         
     /**
@@ -101,15 +101,6 @@ public class Screen implements KeyListener{
     }
 
     /**
-     * Fill the internal dimensions of the given rectangle with the current 
-     * foreground color of the canvas. This is a convenience method. A similar 
-     * effect can be achieved with the "fill" method.
-     */
-    public void fillRectangle(int xPos, int yPos, int width, int height) {
-        fill(new Rectangle(xPos, yPos, width, height));
-    }
-
-    /**
      * Erase the whole canvas.
      */
     public void erase() {
@@ -127,7 +118,6 @@ public class Screen implements KeyListener{
      * @param  shape  the shape object to be erased 
      */
     public void erase(Shape shape) {
-    	//FIXME Dou muito problema, olhem pra mim
         Color original = graphic.getColor();
         graphic.setColor(backgroundColor);
         graphic.fill(shape);              // erase by filling background color
@@ -136,7 +126,10 @@ public class Screen implements KeyListener{
         setForegroundColor(Color.red);
         border();
     }
-
+    
+    /**
+     * Draw the first screen with the game name and the game image
+     */
     private void firstScreen () {
     	setFont(new Font("Times New Roman", Font.BOLD, 24));
     	setForegroundColor(Color.red);
@@ -149,13 +142,14 @@ public class Screen implements KeyListener{
     	} catch (Exception e) {
     		System.out.println(e);
     	}
-    
-    	//drawImage(img, 20, 20);
     	
     	wait(3000);
     	erase();    	
     }
     
+    /**
+     * Draw the game over screen with the score
+     */
     public void gameOverScreen () {
     	setFont(new Font("Times New Roman", Font.BOLD, 24));
     	setForegroundColor(Color.red);
@@ -164,6 +158,23 @@ public class Screen implements KeyListener{
     	erase();    	
     }
     
+    /**
+     * Draw the game over screen with the ponctuation
+     */
+    public void gameOverScreen (Integer ponctuation) {
+    	setFont(new Font("Times New Roman", Font.BOLD, 30));
+    	String score = ponctuation.toString();
+    	drawString("Score: " + score, width/2 - 40, height/2 - 20);
+    	setFont(new Font("Times New Roman", Font.BOLD, 24));
+    	setForegroundColor(Color.red);
+    	drawString("Game Over :(", width/2 - 50, height/2 + 20);
+    	wait(2000);
+    	erase();   
+    }
+    
+    /**
+     * Show the choices of the Snake Game on the screen
+     */
     public void gameChoices () {
     	setFont(new Font("Times New Roman", Font.BOLD, 24));
     	setForegroundColor(Color.red);
@@ -171,14 +182,17 @@ public class Screen implements KeyListener{
     	
     	setForegroundColor(Color.white);
     	setFont(new Font("Times New Roman", Font.PLAIN, 20));
-    	drawString(" 1 - Artifitial Intelligence ", width/2 - 100, height/2);
-    	drawString(" 2 - Humam Player ", width/2 - 100, height/2 + 20);
-    	drawString(" 0 - QUIT ", width/2 - 100, height/2 + 40);
+    	drawString(" ( 1 ) - Artificial Intelligence ", width/2 - 100, height/2);
+    	drawString(" ( 2 ) - Human Player ", width/2 - 100, height/2 + 20);
+    	drawString(" ( 3 ) - Human Player vs. AI", width/2 - 100, height/2 + 40);
+    	drawString(" ( 0 ) - QUIT ", width/2 - 100, height/2 + 60);
     	
     	setForegroundColor(Color.red);
     }
     
-    //FIXME Definir paredes de forma dinâmica (talvez cobrinhas que não se mexem?) 
+    /**
+     * Print the border on the screen
+     */
     public void border () {    	
     	Stroke oldStroke = graphic.getStroke();
     	graphic.setStroke(new BasicStroke((float) pxScale*2));
@@ -214,9 +228,9 @@ public class Screen implements KeyListener{
     
     /**
      * Draws an image onto the canvas.
-     * @param  img   the Image object to be displayed 
-     * @param  x       x co-ordinate for Image placement 
-     * @param  y       y co-ordinate for Image placement 
+     * @param  img   	the Image object to be displayed 
+     * @param  x      	x co-ordinate for Image placement 
+     * @param  y       	y co-ordinate for Image placement 
      * @return  returns boolean value representing whether the image was 
      *          completely loaded 
      */
@@ -284,11 +298,57 @@ public class Screen implements KeyListener{
     public void wait(int milliseconds) {
         try {
             Thread.sleep(milliseconds);
-        } 
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             // ignoring exception at the moment
         }
     }
+
+    /**
+     * Check the arrow that is pressed
+     */
+	public void keyPressed(KeyEvent e) {
+        int keyCode = e.getKeyCode();
+        movimentSide = 0;
+        
+        if (keyCode == KeyEvent.VK_UP) {
+        		movimentSide = 1;
+        }
+        if (keyCode == KeyEvent.VK_DOWN) {
+        	movimentSide = 4;
+        }
+        if (keyCode == KeyEvent.VK_LEFT) {
+        	movimentSide = 2;
+        }
+        if (keyCode == KeyEvent.VK_RIGHT) {
+        	movimentSide = 3;
+        }
+	}
+
+	public void keyReleased(KeyEvent e) {
+		// 
+	}
+
+	/**
+     * Check the arrow that was pressed
+     */
+	public void keyTyped(KeyEvent e) {
+		int keyCode = e.getKeyCode();
+        movimentSide = 0;
+        
+        if (keyCode == KeyEvent.VK_UP) {
+        		movimentSide = 1;
+        }
+        if (keyCode == KeyEvent.VK_DOWN) {
+        	movimentSide = 4;
+        }
+        if (keyCode == KeyEvent.VK_LEFT) {
+        	movimentSide = 2;
+        }
+        if (keyCode == KeyEvent.VK_RIGHT) {
+        	movimentSide = 3;
+        }
+	}
+
 
     /************************************************************************
      * Inner class CanvasPane - the actual canvas component contained in the
@@ -296,58 +356,10 @@ public class Screen implements KeyListener{
      * refresh the image drawn on it.
      */
     private class CanvasPane extends JPanel {
-        public void paint(Graphics g)
-        {
+		private static final long serialVersionUID = 1L;
+
+		public void paint(Graphics g) {
             g.drawImage(canvasImage, 0, 0, null);
         }
     }
-
-	public void keyPressed(KeyEvent e) {
-        int keyCode = e.getKeyCode();
-        movimentSide = 0;
-        
-        if (keyCode == KeyEvent.VK_UP) {
-//           System.out.println("Para cima");
-        		movimentSide = 1;
-        }
-        if (keyCode == KeyEvent.VK_DOWN) {
-//        	System.out.println("Para Baixo!");
-        	movimentSide = 4;
-        }
-        if (keyCode == KeyEvent.VK_LEFT) {
-//        	System.out.println("Para Esquerda!");
-        	movimentSide = 2;
-        }
-        if (keyCode == KeyEvent.VK_RIGHT) {
-//        	System.out.println("Para Direita!");
-        	movimentSide = 3;
-        }
-	}
-
-	public void keyReleased(KeyEvent e) {
-		
-	}
-
-	public void keyTyped(KeyEvent e) {
-		int keyCode = e.getKeyCode();
-        movimentSide = 0;
-        
-        if (keyCode == KeyEvent.VK_UP) {
-//           System.out.println("Para cima");
-        		movimentSide = 1;
-        }
-        if (keyCode == KeyEvent.VK_DOWN) {
-//        	System.out.println("Para Baixo!");
-        	movimentSide = 4;
-        }
-        if (keyCode == KeyEvent.VK_LEFT) {
-//        	System.out.println("Para Esquerda!");
-        	movimentSide = 2;
-        }
-        if (keyCode == KeyEvent.VK_RIGHT) {
-//        	System.out.println("Para Direita!");
-        	movimentSide = 3;
-        }
-	}
-
 }
