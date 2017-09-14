@@ -260,24 +260,24 @@ public class SnakeGame {
 		addDSnake(Color.white, false);
 		addDSnake(Color.white, false);
 		addDSnake(Color.white, false);
-		addDSnake(Color.blue, true); // The snake controlled for a human
+		addDSnake(Color.blue, true); // The snake controlled by a human
 		
 		while (!snakeList.isEmpty()) {
 			boolean tRemove = false;
 			DemoSnake r = new DemoSnake(screen, 15);
 					
-			for(DemoSnake d : snakeList) {				
+			for(DemoSnake d : snakeList) {
 				Thread t = new Thread(d);
-				t.start();
+				t.start();		
 				
-				screen.wait(30);
+				screen.wait(20);
 								
 				if(checkColision(d)) {
 					d.stop = true;
 					tRemove = true;
 					r = d;
 					break;								
-				}				
+				}
 			}
 			
 			if(tRemove) {
